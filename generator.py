@@ -1,0 +1,190 @@
+import random
+from data import GENERATION_DATA
+
+NAME_DATA = GENERATION_DATA["name_data"]
+NAME_DATA_VALIDATION = GENERATION_DATA["validation_data"]["name_data"]
+CLASS_DATA = GENERATION_DATA["class_data"]
+ALIGNMENT_DATA = GENERATION_DATA["alignment_data"]
+
+
+def roll_race(valid_races=None):
+    race = random.choice(valid_races or list(NAME_DATA.keys()))
+    return race
+
+
+def check_race_exists(race):
+    return race in NAME_DATA.keys()
+
+
+def roll_genre(race, valid_genres=None):
+    genre = random.choice(valid_genres or list(NAME_DATA[race].keys()))
+    return genre
+
+
+def check_genre_exists(race, genre):
+    return genre in NAME_DATA[race].keys()
+
+
+def roll_gender(race, genre):
+    genders = [gender for gender in NAME_DATA[race][genre].keys() if gender != "Surnames"]
+    return random.choice(genders)
+
+
+def check_gender_exists(race, genre, gender):
+    return gender in NAME_DATA[race][genre].keys() and not gender == "Surnames"
+
+
+def roll_order():
+    return random.choice(ALIGNMENT_DATA["order"])
+
+
+def check_order_exists(order):
+    return order in ALIGNMENT_DATA["order"]
+
+
+def roll_morality():
+    return random.choice(ALIGNMENT_DATA["morality"])
+
+
+def check_morality_exists(morality):
+    return morality in ALIGNMENT_DATA["morality"]
+
+
+def roll_class():
+    return random.choice(list(CLASS_DATA.keys()))
+
+
+def validate_data(args):
+    # Normalize inputs to Title Case for case-insensitive dictionary lookup.
+    race = args.get("race").title() if args.get("race") else None
+    genre = args.get("genre").title() if args.get("genre") else None
+    gender = args.get("gender").title() if args.get("gender") else None
+
+    # Assign defaults for 'order' and 'morality' if not provided.
+    order = args.get("order").title() if args.get("order") else roll_order()
+    morality = args.get("morality").title() if args.get("morality") else roll_morality()
+
+    validated_data = {}
+    name_data_set = False
+
+    # Handles the case when a full set of valid data is passed.
+    if race and genre and gender:
+        valid_race = check_race_exists(race)
+        if not valid_race:
+            raise ValueError()
+        valid_genre = check_genre_exists(race, genre)
+        if not valid_genre:
+            raise ValueError()
+        valid_gender = check_gender_exists(race, genre, gender)
+        if not valid_gender:
+            raise ValueError()
+        validated_data["race"] = race
+        validated_data["genre"] = genre
+        validated_data["gender"] = gender
+        name_data_set = True
+
+    # Retrieve pre-defined validation sets from global data structures.
+    if gender and not name_data_set:
+        valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
+        valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
+        if not valid_gender_to_genre_keys:
+            raise ValueError()
+
+        if genre and genre not in valid_gender_to_genre_keys:
+            raise ValueError()
+        elif genre and not race:
+            validated_data["genre"] = genre
+            races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
+            valid_races = [race for race in races if race in valid_gender_to_race_keys]
+            validated_data["race"] = roll_race(valid_races=valid_races)
+
+        if not valid_gender_to_race_keys:
+            raise ValueError()
+
+        if race and race not in valid_gender_to_race_keys:
+            raise ValueError()
+        elif race and not genre:
+            validated_data["race"] = race
+            genres = list(NAME_DATA[race].keys())
+            valid_genres = [genre for genre in genres if genre in valid_gender_to_genre_keys]
+            validated_data["genre"] = roll_genre(race=race, valid_genres=valid_genres)
+
+        if gender and not race and not genre:
+            validated_data["genre"] = random.choice(valid_gender_to_genre_keys)
+            races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
+            valid_races = [race for race in races if race in valid_gender_to_race_keys]
+            validated_data["race"] = roll_race(valid_races=valid_races)
+        validated_data["gender"] = gender
+
+    if genre and not gender and not name_data_set:
+        valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
+        if not valid_genre_to_race_keys:
+            raise ValueError()
+        if race and race not in valid_genre_to_race_keys:
+            raise ValueError()
+        elif race:
+            validated_data["race"] = race
+            validated_data["genre"] = genre
+            validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+        else:
+            validated_data["race"] = roll_race(valid_races=valid_genre_to_race_keys)
+            validated_data["genre"] = genre
+            validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+
+    no_genre_or_gender = not genre and not gender
+    only_race = race and no_genre_or_gender
+    no_params = not race and no_genre_or_gender
+    if only_race or no_params:
+        validated_data["race"] = race if race else roll_race()
+        validated_data["genre"] = roll_genre(validated_data["race"])
+        validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+    return validated_data
+
+
+def generate_name(race=None, genre=None, gender=None, firstname=None, surname=None):
+    name_data = GENERATION_DATA["name_data"]
+    firstname_part = firstname if firstname else random.choice(name_data[race][genre][gender]["full_firstnames"])
+    surname_part = surname if surname else random.choice(name_data[race][genre]["Surnames"]["full_surnames"])
+    full_name = f"{firstname_part} {surname_part}"
+    return full_name
+
+
+def generate_stats():
+    stats = {
+        "Strength": 0,
+        "Dexterity": 0,
+        "Constitution": 0,
+        "Intelligence": 0,
+        "Wisdom": 0,
+        "Charisma": 0
+    }
+    for stat in stats.keys():
+        lowest_roll = 7
+        total = 0
+        for i in range(0, 4):
+            roll = random.choice(range(1, 7))
+            total += roll
+            if roll < lowest_roll:
+                lowest_roll = roll
+        stats[stat] = total - lowest_roll
+    return stats
+
+
+def generate_npc(args):
+    try:
+        validated_data = validate_data(args)
+    except ValueError as e:
+        raise e
+    race = validated_data["race"]
+    genre = validated_data["genre"]
+    gender = validated_data["gender"]
+    firstname = validated_data.get("firstname")
+    surname = validated_data.get("surname")
+
+    name = generate_name(race=race, genre=genre, gender=gender, firstname=firstname, surname=surname)
+    stats = generate_stats()
+    return name
+
+
+for _ in range(1, 1000):
+    print(generate_npc({"race": "alien", "genre": "Sci-fi", "gender": "male"}))
