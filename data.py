@@ -1,4 +1,4 @@
-from names import HUMAN_MALE_FANTASY_NAMES, HUMAN_FEMALE_FANTASY_NAMES
+from names import HUMAN_MALE_FANTASY_NAMES, HUMAN_FEMALE_FANTASY_NAMES, HUMAN_FANTASY_SURNAMES
 
 GENERATION_DATA = {
     "validation_data": {
@@ -15,112 +15,7 @@ GENERATION_DATA = {
                     "generate_firstname": {},
                 },
                 "Surnames": {
-                    "full_surnames": [
-                        "Arlow",
-                        "Aillad",
-                        "Apton",
-                        "Angly",
-                        "Benton",
-                        "Bannerman",
-                        "Barton",
-                        "Belloway",
-                        "Charterstead",
-                        "Cander",
-                        "Cowler",
-                        "Cassoway",
-                        "Derrow",
-                        "Dunwell",
-                        "Danbury",
-                        "Damell",
-                        "Elloway",
-                        "Egton",
-                        "Eagleton",
-                        "Ebbingdon",
-                        "Farrowell",
-                        "Felmor",
-                        "Fenbarrow",
-                        "Farison",
-                        "Glenmor",
-                        "Godricson",
-                        "Gulbane",
-                        "Gavinson",
-                        "Hallardon",
-                        "Helton",
-                        "Hunterford",
-                        "Helmsman",
-                        "Isledon",
-                        "Ivoron",
-                        "Irelly",
-                        "Ingleton",
-                        "Jarethon",
-                        "Jarlstead",
-                        "Julianson",
-                        "Jorgenford",
-                        "Karwick",
-                        "Kirkly",
-                        "Kilnham",
-                        "Kelard",
-                        "Larton",
-                        "Logley",
-                        "Lawell",
-                        "Lasdon",
-                        "Merkard",
-                        "Malwick",
-                        "Morbury",
-                        "Masley",
-                        "Nalbarrow",
-                        "Norbury",
-                        "Nestford",
-                        "Nulham",
-                        "Ottomor",
-                        "Olberman",
-                        "Oakly",
-                        "Oldwell",
-                        "Pitbarrow",
-                        "Pearley",
-                        "Pickdon",
-                        "Pasard",
-                        "Quilard",
-                        "Quickford",
-                        "Quinton",
-                        "Quarmby",
-                        "Relkin",
-                        "Rudbury",
-                        "Runely",
-                        "Ramwell",
-                        "Selman",
-                        "Silemar",
-                        "Sailman",
-                        "Smithdon",
-                        "Talbert",
-                        "Tillerman",
-                        "Telbury",
-                        "Tulway",
-                        "Uthadly",
-                        "Ullard",
-                        "Ushwell",
-                        "Unham",
-                        "Vellerway",
-                        "Vistagard",
-                        "Valham",
-                        "Vincely",
-                        "Willowstead",
-                        "Wallbury",
-                        "Woolford",
-                        "Wineman",
-                        "Xeonly",
-                        "Xanderley",
-                        "Xurbert",
-                        "Xandewell",
-                        "Yigbert",
-                        "Yakton",
-                        "Yelwick",
-                        "Yonford",
-                        "Zenstead",
-                        "Zigard",
-                        "Zulbarrow",
-                        "Zalgard"
-                    ],
+                    "full_surnames": HUMAN_FANTASY_SURNAMES,
                     "generate_surname": {
 
                     }
@@ -242,7 +137,7 @@ GENERATION_DATA = {
                     "generate_firstname": {},
                 },
                 "Surnames": {
-                    "full_surnames": ["Cunt"],
+                    "full_surnames": ["One"],
                     "generate_surname": {}
                 }
             }
@@ -266,6 +161,105 @@ GENERATION_DATA = {
     "alignment_data": {
         "order": ["Lawful", "Neutral", "Chaotic"],
         "morality": ["Good", "Neutral", "Evil"]
+    },
+    "trait_data": {
+        "alignment_traits": {
+            "order": {
+                "Lawful": {
+                    "Disciplined": "Follows rules and procedures strictly.",
+                    "Methodical": "Approaches tasks in a slow, systematic, and orderly manner.",
+                    "Reliable": "Can be trusted to fulfill duties and promises.",
+                    "Rigid": "Inflexible in thought or action; adheres strictly to tradition."
+                },
+                "Chaotic": {
+                    "Impulsive": "Acts quickly based on instinct or feeling, ignoring consequences.",
+                    "Unpredictable": "Behavior is erratic and difficult to anticipate.",
+                    "Spontaneous": "Loves unplanned action and thrives on novelty.",
+                    "Turbulent": "Prone to sudden, violent, or intense internal disorder."
+                },
+                "Neutral": {
+                    "Flexible": "Easily adapts to changing circumstances or rules.",
+                    "Uncommitted": "Reluctant to take firm sides or bind themselves to a cause.",
+                    "Situational": "Decisions are made based on the current context rather than abstract rules.",
+                    "Moderate": "Prefers balance and avoids extremes in action or ideology."
+                },
+            },
+            "morality": {
+                "Good": {
+                    "Pious": "Devoted to the pursuit of moral excellence or divine will.",
+                    "Just": "Dedicated to fairness and equality in application of ethics.",
+                    "Virtuous": "Possessing high moral standards and righteousness.",
+                    "Compassionate": "Always Strives to help the poor, downtrodden or those in need."
+                },
+                "Evil": {
+                    "Ruthless": "Lacking pity or compassion; cruel and uncompromising.",
+                    "Vindictive": "Having a strong desire for revenge in the most harsh way possible.",
+                    "Egoist": "Focused entirely on self-interest; treats others as means to an end.",
+                    "Destructive": "Revels in destruction of the property, home or mental state of others."
+                },
+                "Neutral": {
+                    "Pragmatic": "Deals with things sensibly and realistically, focusing on practical outcomes.",
+                    "Observant": "Attentive to surroundings and keen on noticing details.",
+                    "Indifferent": "Lacking interest, sympathy, or concern.",
+                    "Detached": "Emotionally separated from situations, people, or outcomes."
+                }
+            },
+            "alignment": {
+                "Lawful Good": {
+                    "Heroic": "Committed absolutely to their highest ideals, they are willing to fight to the death to "
+                              "protect the innocent and uphold their sacred code of justice."
+                },
+                "Neutral Good": {
+                    "Moral Calculus": "Willing to break laws and sacrifice a few to achieve the greatest good for the "
+                                      "majority with cold calculation of number of lives saved.",
+                    "Vigilante": "Committed to delivering justice efficiently; breaks flawed laws and bypasses corrupt "
+                                 "institutions when the greatest good demands immediate action."
+                },
+                "Chaotic Good": {
+                    "Martyr to Ideals": "Driven by absolute conviction, they impulsively sacrifice everything, even "
+                                        "their life, to uphold their ideals.",
+                    "Pure Insanity": "This character upholds absolute good using unhinged, unpredictable and "
+                                     "unconventional means."
+                },
+                "Lawful Neutral": {},
+                "True Neutral": {},
+                "Chaotic Neutral": {},
+                "Lawful Evil": {
+                    "Veiled Tyrant": "Wields laws, contracts, and wealth like weapons; they commit grave evil, "
+                                     "yet remain technically within the letter of the law."
+                },
+                "Neutral Evil": {
+                    "Master Mind": "Wears the mask of other alignments to manipulate people towards their goals."
+                },
+                "Chaotic Evil": {
+                    "Twisted by darkness": "Are their acts guided by a malignant external force, or are they merely "
+                                           "the result of deep psychological trauma and a fractured mind?"
+                },
+            }
+        },
+        "ego": {
+            "high": {
+                "Arrogant": "",
+                "Self-assured": "",
+                "Bold": "",
+                "Overconfident": ""
+            },
+            "medium": {
+                "Humble": "",
+                "Balanced": "",
+                "Modest": "",
+                "Realistic": ""
+            },
+            "low": {
+                "Insecure": "",
+                "Timid": "",
+                "Self-doubting": "",
+                "Submissive": ""
+            },
+        },
+        "social": {
+
+        }
     }
 }
 

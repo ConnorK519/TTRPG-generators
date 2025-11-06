@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
-from generator import roll_race, check_race_exists, roll_genre, check_genre_exists, roll_gender, roll_class, generate_name, generate_stats
+from generator import generate_npc
+import os
+
+ENV = os.environ.get("ENV") or "dev"
 
 app = Flask(__name__)
 
@@ -9,10 +12,16 @@ def api_details():
     return "Hello, world!"
 
 
+@app.route("/generate-npc")
+def get_npc_data():
+    pass
+
+
 @app.route("/api/generate-npc")
 def create_npc():
-    return
+    new_npc = generate_npc(request.args)
+    return new_npc
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=ENV == "dev")

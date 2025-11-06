@@ -5,6 +5,7 @@ NAME_DATA = GENERATION_DATA["name_data"]
 NAME_DATA_VALIDATION = GENERATION_DATA["validation_data"]["name_data"]
 CLASS_DATA = GENERATION_DATA["class_data"]
 ALIGNMENT_DATA = GENERATION_DATA["alignment_data"]
+PERSONALITY_DATA = GENERATION_DATA["trait_data"]
 
 
 def roll_race(valid_races=None):
@@ -64,7 +65,21 @@ def validate_data(args):
     order = args.get("order").title() if args.get("order") else roll_order()
     morality = args.get("morality").title() if args.get("morality") else roll_morality()
 
-    validated_data = {}
+    validated_data = {
+        "firstname": args.get("firstname").title() if args.get("firstname") else None,
+        "surname": args.get("surname").title() if args.get("surname") else None
+    }
+
+    if order and not check_order_exists(order):
+        raise ValueError()
+
+    validated_data["order"] = order
+
+    if morality and not check_morality_exists(morality):
+        raise ValueError()
+
+    validated_data["morality"] = morality
+
     name_data_set = False
 
     # Handles the case when a full set of valid data is passed.
@@ -170,6 +185,56 @@ def generate_stats():
     return stats
 
 
+def generate_traits(order=None, morality=None, alignment=None):
+    alignment_traits = PERSONALITY_DATA["alignment_traits"]
+    traits = {
+        "order traits": {
+
+        },
+        "morality traits": {
+
+        }
+    }
+    order_trait_count = 1
+    morality_trait_count = 1
+
+    order_trait_threshold = 600
+    morality_trait_threshold = 600
+
+    order_data = alignment_traits["order"][order]
+    available_order_keys = list(order_data.keys())
+
+    morality_data = alignment_traits["morality"][morality]
+    available_morality_keys = list(morality_data.keys())
+
+    while len(traits["order traits"].keys()) < order_trait_count:
+        unpicked_order_traits = set(available_order_keys) - set(traits["order traits"].keys())
+
+        order_trait_key = random.choice(list(unpicked_order_traits))
+
+        traits["order traits"][order_trait_key] = order_data[order_trait_key]
+
+        order_trait_roll = random.choice(range(1, 1001))
+
+        if order_trait_roll > order_trait_threshold:
+            order_trait_count += 1
+            order_trait_threshold += 200
+
+    while len(traits["morality traits"].keys()) < morality_trait_count:
+        unpicked_morality_traits = set(available_morality_keys) - set(traits["morality traits"].keys())
+
+        morality_trait_key = random.choice(list(unpicked_morality_traits))
+
+        traits["morality traits"][morality_trait_key] = morality_data[morality_trait_key]
+
+        morality_trait_roll = random.choice(range(1, 1001))
+
+        if morality_trait_roll > morality_trait_threshold:
+            morality_trait_count += 1
+            morality_trait_threshold += 200
+    return traits
+
+
 def generate_npc(args):
     try:
         validated_data = validate_data(args)
@@ -178,13 +243,30 @@ def generate_npc(args):
     race = validated_data["race"]
     genre = validated_data["genre"]
     gender = validated_data["gender"]
+
     firstname = validated_data.get("firstname")
     surname = validated_data.get("surname")
 
+    order = validated_data.get("order")
+    morality = validated_data.get("morality")
+    alignment = "True Neutral" if order == "Neutral" and morality == "Neutral" else f"{order} {morality}"
+
     name = generate_name(race=race, genre=genre, gender=gender, firstname=firstname, surname=surname)
     stats = generate_stats()
-    return name
+    traits = generate_traits(order=order, morality=morality, alignment=alignment)
+    npc = {
+        "name": name,
+        "race": race,
+        "genre": genre,
+        "gender": gender,
+        "alignment": alignment,
+        "stats": stats,
+        "traits": traits,
+    }
+    return npc
 
 
-for _ in range(1, 1000):
-    print(generate_npc({"race": "alien", "genre": "Sci-fi", "gender": "male"}))
+for _ in range(1, 10):
+    print(generate_npc({"race": "human", "genre": "fantasy"}))
+
+# print(generate_npc({"race": "human", "genre": "fantasy"}))
