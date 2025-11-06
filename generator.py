@@ -266,7 +266,7 @@ def generate_npc(args):
     return npc
 
 
-for _ in range(1, 10):
-    print(generate_npc({"race": "human", "genre": "fantasy"}))
+# for _ in range(1, 10):
+#     print(generate_npc({"race": "human", "genre": "fantasy"}))
 
 # print(generate_npc({"race": "human", "genre": "fantasy"}))
