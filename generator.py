@@ -115,8 +115,8 @@ def validate_data(args):
                     f"Invalid pairing of gender: {gender} and genre: {genre}. Valid genres for gender: {list(valid_gender_to_genre_keys)}.")
 
             validated_data["genre"] = genre or random.choice(valid_gender_to_genre_keys)
-            races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
-            valid_races = [race_key for race_key in races if race in valid_gender_to_race_keys]
+            valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
+            valid_races = [race_key for race_key in valid_genre_to_race_keys if race_key in valid_genre_to_race_keys and race_key in valid_gender_to_race_keys]
             validated_data["race"] = roll_race(valid_races=valid_races)
             validated_data["gender"] = gender
             pass
@@ -345,9 +345,9 @@ def generate_npc(args):
     return npc
 
 
-# race = "Human"
-# genre = ""
-# gender = ""
+race = ""
+genre = ""
+gender = "N/A"
 
 # Race
 # Race and Genre
@@ -376,4 +376,4 @@ def generate_npc(args):
 #         print("Npc not aligned with params critical error!")
 #         break
 
-# print(generate_npc({"race": "human", "genre": "fantasy"}))
+# print(generate_npc({"gender": "female"}))
