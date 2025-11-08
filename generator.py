@@ -96,9 +96,7 @@ def validate_data(args):
             gender = gender or roll_gender(race, genre)
             valid_gender = check_gender_exists(race, genre, gender)
             if not valid_gender:
-                genders = list(NAME_DATA[race][genre].keys())
-                if "Surnames" in genders:
-                    genders.remove("Surnames")
+                genders = [key for key in NAME_DATA[race][genre].keys() if key != "Surnames"]
                 raise ValueError(
                     f"Invalid gender: {gender} for race: {race} and genre: {genre}, combination. Valid genders {genders}.")
             validated_data["race"] = race
@@ -347,56 +345,3 @@ def generate_npc(args):
         "traits": traits,
     }
     return npc
-
-
-# race = "Android"
-# genre = ""
-# gender = "N/A"
-#
-#
-# race_keys = list(NAME_DATA.keys()) + [None, None, None, None, None]
-# genre_keys = list(GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].keys()) + [None, None, None, None, None]
-# gender_keys = list(GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].keys()) + [None, None, None, None, None]
-
-
-# Race
-# Race and Genre
-# Race, Genre and Gender
-# Gender
-# Gender and Genre
-# Gender and Race
-# Genre
-# No data
-# All
-# Bad Genre data with All > Fixed error message bug
-# Bad Race data with All
-# Bad Gender data with All > Fixed an issue where Surnames was included in the gender list due to data structure
-# Bad Race only
-# Bad Genre with Race
-# Bad Gender with Race > Fixed an error where I didn't check the gender in only race and gender
-# Bad Race with Gender
-# Bad Genre with Gender
-# Bad Gender with Genre > Fixed an error where I didn't check the gender in only genre and gender
-
-
-# for _ in range(1, 1001):
-#     npc = generate_npc({"race": race, "genre": genre, "gender": gender})
-#     generate_npc({"race": race})
-#     generate_npc({"race": race, "genre": genre})
-#     generate_npc({"race": race, "gender": gender})
-#     generate_npc({"gender": gender})
-#     generate_npc({"genre": genre, "gender": gender})
-#     generate_npc({})
-#     generate_npc({"genre": genre})
-#     try:
-#         print(generate_npc({"race": random.choice(race_keys), "genre": random.choice(genre_keys),
-#                       "gender": random.choice(gender_keys)}))
-#         generate_npc({"race": random.choice(race_keys), "genre": random.choice(genre_keys),
-#                       "gender": random.choice(gender_keys)})
-#     except ValueError as e:
-#         print(e)
-#     if (npc["race"] != race and race) or (genre and npc["genre"] != genre) or (gender and npc["gender"] != gender):
-#         print("Npc not aligned with params critical error!")
-#         break
-
-# print(generate_npc({"gender": "female"}))
