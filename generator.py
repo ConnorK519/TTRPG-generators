@@ -71,88 +71,167 @@ def validate_data(args):
     }
 
     if order and not check_order_exists(order):
-        raise ValueError()
+        raise ValueError(f"Invalid order axis: {order}. Valid orders: {ALIGNMENT_DATA["order"]}")
 
     validated_data["order"] = order
 
     if morality and not check_morality_exists(morality):
-        raise ValueError()
+        raise ValueError(f"Invalid morality axis: {morality}. Valid moralities: {ALIGNMENT_DATA["morality"]}")
 
     validated_data["morality"] = morality
 
-    name_data_set = False
+    name_data_pattern = (bool(race), bool(genre), bool(gender))
 
-    # Handles the case when a full set of valid data is passed.
-    if race and genre and gender:
-        valid_race = check_race_exists(race)
-        if not valid_race:
-            raise ValueError()
-        valid_genre = check_genre_exists(race, genre)
-        if not valid_genre:
-            raise ValueError()
-        valid_gender = check_gender_exists(race, genre, gender)
-        if not valid_gender:
-            raise ValueError()
-        validated_data["race"] = race
-        validated_data["genre"] = genre
-        validated_data["gender"] = gender
-        name_data_set = True
-
-    # Retrieve pre-defined validation sets from global data structures.
-    if gender and not name_data_set:
-        valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
-        valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
-        if not valid_gender_to_genre_keys:
-            raise ValueError()
-
-        if genre and genre not in valid_gender_to_genre_keys:
-            raise ValueError()
-        elif genre and not race:
-            validated_data["genre"] = genre
-            races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
-            valid_races = [race for race in races if race in valid_gender_to_race_keys]
-            validated_data["race"] = roll_race(valid_races=valid_races)
-
-        if not valid_gender_to_race_keys:
-            raise ValueError()
-
-        if race and race not in valid_gender_to_race_keys:
-            raise ValueError()
-        elif race and not genre:
+    match name_data_pattern:
+        case (False, False, False) | (True, False, False) | (True, True, False) | (True, True, True):
+            race = race or roll_race()
+            valid_race = check_race_exists(race)
+            if not valid_race:
+                raise ValueError(f"Invalid race: {race}. Valid races: {list(NAME_DATA.keys())}.")
+            genre = genre or roll_genre(race)
+            valid_genre = check_genre_exists(race, genre)
+            if not valid_genre:
+                raise ValueError(
+                    f"Invalid genre: {genre} for race: {race}. Valid genres: {list(NAME_DATA[race].keys())}.")
+            gender = gender or roll_gender(race, genre)
+            valid_gender = check_gender_exists(race, genre, gender)
+            if not valid_gender:
+                genders = [gender_key for gender_key in list(NAME_DATA[race][genre].keys()) if gender != "Surnames"]
+                raise ValueError(
+                    f"Invalid gender: {gender} for race: {race} and genre: {genre}, combination. Valid genders {genders}.")
             validated_data["race"] = race
-            genres = list(NAME_DATA[race].keys())
-            valid_genres = [genre for genre in genres if genre in valid_gender_to_genre_keys]
-            validated_data["genre"] = roll_genre(race=race, valid_genres=valid_genres)
+            validated_data["genre"] = genre
+            validated_data["gender"] = gender
+            pass
+        case (False, False, True) | (False, True, True):
+            valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
+            valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
 
-        if gender and not race and not genre:
-            validated_data["genre"] = random.choice(valid_gender_to_genre_keys)
+            if not valid_gender_to_genre_keys:
+                raise ValueError(f"Invalid Gender: {gender}. Gender is not recognized.")
+
+            if genre and genre not in valid_gender_to_genre_keys:
+                raise ValueError(
+                    f"Invalid pairing of gender: {gender} and genre: {genre}. Valid genres for gender: {list(valid_gender_to_genre_keys)}.")
+
+            validated_data["genre"] = genre or random.choice(valid_gender_to_genre_keys)
             races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
-            valid_races = [race for race in races if race in valid_gender_to_race_keys]
+            valid_races = [race_key for race_key in races if race in valid_gender_to_race_keys]
             validated_data["race"] = roll_race(valid_races=valid_races)
-        validated_data["gender"] = gender
+            validated_data["gender"] = gender
+            pass
+        case (True, False, True):
+            valid_race = check_race_exists(race)
+            valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
+            valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
 
-    if genre and not gender and not name_data_set:
-        valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
-        if not valid_genre_to_race_keys:
-            raise ValueError()
-        if race and race not in valid_genre_to_race_keys:
-            raise ValueError()
-        elif race:
+            if not valid_gender_to_race_keys:
+                raise ValueError(f"Invalid Gender: {gender}. Gender is not recognized.")
+
+            if not valid_race:
+                raise ValueError(f"Invalid race: {race}. Valid races: {list(NAME_DATA.keys())}.")
+
+            if race not in valid_gender_to_race_keys:
+                raise ValueError(
+                    f"Invalid race: {race} for gender: {gender}. Valid races: {valid_gender_to_race_keys} for {gender}")
+
+            genres = list(NAME_DATA[race].keys())
+            valid_genres = [genre_key for genre_key in genres if genre in valid_gender_to_genre_keys]
+
+            if not valid_genres:
+                raise ValueError(f"No compatible genres found for race: {race} and gender: {gender}. Check your data "
+                                 f"configuration.")
+
             validated_data["race"] = race
-            validated_data["genre"] = genre
-            validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
-        else:
+            validated_data["gender"] = gender
+            validated_data["genre"] = roll_genre(race=race, valid_genres=valid_genres)
+            pass
+        case (False, True, False):
+            valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
+
+            if not valid_genre_to_race_keys:
+                raise ValueError(f"Invalid genre: {genre}. Genre does not exist in the data.")
+
             validated_data["race"] = roll_race(valid_races=valid_genre_to_race_keys)
             validated_data["genre"] = genre
             validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+            pass
 
-    no_genre_or_gender = not genre and not gender
-    only_race = race and no_genre_or_gender
-    no_params = not race and no_genre_or_gender
-    if only_race or no_params:
-        validated_data["race"] = race if race else roll_race()
-        validated_data["genre"] = roll_genre(validated_data["race"])
-        validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+    # name_data_set = False
+    #
+    # Handles the case when a full set of valid data is passed.
+    # if race and genre and gender:
+    #     valid_race = check_race_exists(race)
+    #     if not valid_race:
+    #         raise ValueError(f"Invalid race: {race} for generator. Valid races: {list(NAME_DATA.keys())}.")
+    #     valid_genre = check_genre_exists(race, genre)
+    #     if not valid_genre:
+    #         raise ValueError(f"Invalid genre: {genre} for race: {race}. Valid races: {list(NAME_DATA[race].keys())}.")
+    #     valid_gender = check_gender_exists(race, genre, gender)
+    #     if not valid_gender:
+    #         raise ValueError()
+    #     validated_data["race"] = race
+    #     validated_data["genre"] = genre
+    #     validated_data["gender"] = gender
+    #     name_data_set = True
+    #
+    # # Retrieve pre-defined validation sets from global data structures.
+    # if gender and not name_data_set:
+    #     valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
+    #     valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
+    #     if not valid_gender_to_genre_keys:
+    #         raise ValueError()
+    #
+    #     if genre and genre not in valid_gender_to_genre_keys:
+    #         raise ValueError()
+    #     elif genre and not race:
+    #         validated_data["genre"] = genre
+    #         races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
+    #         valid_races = [race for race in races if race in valid_gender_to_race_keys]
+    #         validated_data["race"] = roll_race(valid_races=valid_races)
+    #
+    #     if not valid_gender_to_race_keys:
+    #         raise ValueError()
+    #
+    #     if race and race not in valid_gender_to_race_keys:
+    #         raise ValueError()
+    #     elif race and not genre:
+    #         validated_data["race"] = race
+    #         genres = list(NAME_DATA[race].keys())
+    #         valid_genres = [genre for genre in genres if genre in valid_gender_to_genre_keys]
+    #         validated_data["genre"] = roll_genre(race=race, valid_genres=valid_genres)
+    #
+    #     if gender and not race and not genre:
+    #         validated_data["genre"] = random.choice(valid_gender_to_genre_keys)
+    #         races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
+    #         valid_races = [race for race in races if race in valid_gender_to_race_keys]
+    #         validated_data["race"] = roll_race(valid_races=valid_races)
+    #     validated_data["gender"] = gender
+    #
+    # if genre and not gender and not name_data_set:
+    #     valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
+    #     if not valid_genre_to_race_keys:
+    #         raise ValueError()
+    #     if race and race not in valid_genre_to_race_keys:
+    #         raise ValueError()
+    #     elif race:
+    #         validated_data["race"] = race
+    #         validated_data["genre"] = genre
+    #         validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+    #     else:
+    #         validated_data["race"] = roll_race(valid_races=valid_genre_to_race_keys)
+    #         validated_data["genre"] = genre
+    #         validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
+    #
+    # no_genre_or_gender = not genre and not gender
+    # only_race = race and no_genre_or_gender
+    # no_params = not race and no_genre_or_gender
+    # if only_race and not check_race_exists(race):
+    #     raise ValueError(f"Invalid race: {race} for generator. Valid races: {list(NAME_DATA.keys())}.")
+    # if only_race or no_params:
+    #     validated_data["race"] = race if race else roll_race()
+    #     validated_data["genre"] = roll_genre(validated_data["race"])
+    #     validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
     return validated_data
 
 
@@ -266,7 +345,35 @@ def generate_npc(args):
     return npc
 
 
-# for _ in range(1, 10):
-#     print(generate_npc({"race": "human", "genre": "fantasy"}))
+# race = "Human"
+# genre = ""
+# gender = ""
+
+# Race
+# Race and Genre
+# Race, Genre and Gender
+# Gender
+# Gender and Genre
+# Gender and Race
+# Genre
+# No data
+# All
+# Bad Genre data with All > Fixed error message bug
+# Bad Race data with All
+# Bad Gender data with All > Fixed an issue where Surnames was included in the gender list due to data structure
+# Bad Race only
+# Bad Genre with Race
+# Bad Gender with Race > Fixed an error where I didn't check the gender in only race and gender
+# Bad Race with Gender
+# Bad Genre with Gender
+# Bad Gender with Genre > Fixed an error where I didn't check the gender in only genre and gender
+
+
+# for _ in range(1, 1001):
+#     npc = generate_npc({"race": race, "genre": genre, "gender": gender})
+#     print(npc)
+#     if (npc["race"] != race and race) or (genre and npc["genre"] != genre) or (gender and npc["gender"] != gender):
+#         print("Npc not aligned with params critical error!")
+#         break
 
 # print(generate_npc({"race": "human", "genre": "fantasy"}))

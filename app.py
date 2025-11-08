@@ -19,8 +19,12 @@ def get_npc_data():
 
 @app.route("/api/generate-npc")
 def create_npc():
-    new_npc = generate_npc(request.args)
-    return new_npc
+    try:
+        new_npc = generate_npc(request.args)
+        return new_npc, 200
+    except ValueError as e:
+        print(f"Validation Error: {e}")
+        return jsonify({"error": str(e)}), 400
 
 
 if __name__ == "__main__":
