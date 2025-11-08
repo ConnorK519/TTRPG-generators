@@ -136,7 +136,7 @@ def validate_data(args):
                     f"Invalid race: {race} for gender: {gender}. Valid races: {valid_gender_to_race_keys} for {gender}")
 
             genres = list(NAME_DATA[race].keys())
-            valid_genres = [genre_key for genre_key in genres if genre in valid_gender_to_genre_keys]
+            valid_genres = [genre_key for genre_key in genres if genre_key in valid_gender_to_genre_keys]
 
             if not valid_genres:
                 raise ValueError(f"No compatible genres found for race: {race} and gender: {gender}. Check your data "
@@ -345,7 +345,7 @@ def generate_npc(args):
     return npc
 
 
-race = ""
+race = "Android"
 genre = ""
 gender = "N/A"
 
