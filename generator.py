@@ -96,7 +96,9 @@ def validate_data(args):
             gender = gender or roll_gender(race, genre)
             valid_gender = check_gender_exists(race, genre, gender)
             if not valid_gender:
-                genders = [gender_key for gender_key in list(NAME_DATA[race][genre].keys()) if gender != "Surnames"]
+                genders = list(NAME_DATA[race][genre].keys())
+                if "Surnames" in genders:
+                    genders.remove("Surnames")
                 raise ValueError(
                     f"Invalid gender: {gender} for race: {race} and genre: {genre}, combination. Valid genders {genders}.")
             validated_data["race"] = race
@@ -115,8 +117,10 @@ def validate_data(args):
                     f"Invalid pairing of gender: {gender} and genre: {genre}. Valid genres for gender: {list(valid_gender_to_genre_keys)}.")
 
             validated_data["genre"] = genre or random.choice(valid_gender_to_genre_keys)
-            valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
-            valid_races = [race_key for race_key in valid_genre_to_race_keys if race_key in valid_genre_to_race_keys and race_key in valid_gender_to_race_keys]
+            valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(
+                validated_data["genre"])
+            valid_races = [race_key for race_key in valid_genre_to_race_keys if
+                           race_key in valid_genre_to_race_keys and race_key in valid_gender_to_race_keys]
             validated_data["race"] = roll_race(valid_races=valid_races)
             validated_data["gender"] = gender
             pass
@@ -345,9 +349,15 @@ def generate_npc(args):
     return npc
 
 
-race = "Android"
-genre = ""
-gender = "N/A"
+# race = "Android"
+# genre = ""
+# gender = "N/A"
+#
+#
+# race_keys = list(NAME_DATA.keys()) + [None, None, None, None, None]
+# genre_keys = list(GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].keys()) + [None, None, None, None, None]
+# gender_keys = list(GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].keys()) + [None, None, None, None, None]
+
 
 # Race
 # Race and Genre
@@ -371,7 +381,20 @@ gender = "N/A"
 
 # for _ in range(1, 1001):
 #     npc = generate_npc({"race": race, "genre": genre, "gender": gender})
-#     print(npc)
+#     generate_npc({"race": race})
+#     generate_npc({"race": race, "genre": genre})
+#     generate_npc({"race": race, "gender": gender})
+#     generate_npc({"gender": gender})
+#     generate_npc({"genre": genre, "gender": gender})
+#     generate_npc({})
+#     generate_npc({"genre": genre})
+#     try:
+#         print(generate_npc({"race": random.choice(race_keys), "genre": random.choice(genre_keys),
+#                       "gender": random.choice(gender_keys)}))
+#         generate_npc({"race": random.choice(race_keys), "genre": random.choice(genre_keys),
+#                       "gender": random.choice(gender_keys)})
+#     except ValueError as e:
+#         print(e)
 #     if (npc["race"] != race and race) or (genre and npc["genre"] != genre) or (gender and npc["gender"] != gender):
 #         print("Npc not aligned with params critical error!")
 #         break
