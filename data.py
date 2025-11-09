@@ -144,19 +144,45 @@ GENERATION_DATA = {
         }
     },
     "class_data": {
-        "Artificer": {},
-        "Barbarian": {},
-        "Bard": {},
-        "Cleric": {},
-        "Druid": {},
-        "Fighter": {},
-        "Monk": {},
-        "Paladin": {},
-        "Ranger": {},
-        "Rogue": {},
-        "Sorcerer": {},
-        "Warlock": {},
-        "Wizard": {}
+        "Artificer": {
+            "hit dice": 8
+        },
+        "Barbarian": {
+            "hit dice": 12
+        },
+        "Bard": {
+            "hit dice": 8
+        },
+        "Cleric": {
+            "hit dice": 8
+        },
+        "Druid": {
+            "hit dice": 8
+        },
+        "Fighter": {
+            "hit dice": 10
+        },
+        "Monk": {
+            "hit dice": 8
+        },
+        "Paladin": {
+            "hit dice": 10
+        },
+        "Ranger": {
+            "hit dice": 10
+        },
+        "Rogue": {
+            "hit dice": 8
+        },
+        "Sorcerer": {
+            "hit dice": 6
+        },
+        "Warlock": {
+            "hit dice": 8
+        },
+        "Wizard": {
+            "hit dice": 6
+        }
     },
     "alignment_data": {
         "order": ["Lawful", "Neutral", "Chaotic"],
@@ -221,15 +247,33 @@ GENERATION_DATA = {
                     "Pure Insanity": "This character upholds absolute good using unhinged, unpredictable and "
                                      "unconventional means."
                 },
-                "Lawful Neutral": {},
-                "True Neutral": {},
-                "Chaotic Neutral": {},
+                "Lawful Neutral": {
+                    "Unbending Precedent": "Bound solely by established laws, contracts, or the dictates of their "
+                                           "organization. Personal feelings are irrelevant; the code must be upheld, "
+                                           "even if unjust.",
+                    "The Greater Order": "Dedicated to abstract cosmic order, logic, and efficiency. Views all chaos, "
+                                         "regardless of moral alignment, as a threat to long-term stability that must "
+                                         "be pruned."
+                },
+                "True Neutral": {
+                    "Primal Balance": "Dedicated to universal equilibrium. Actively intervenes to prevent Good or Evil "
+                                      "from becoming dominant, seeing all extremism as a threat to stability.",
+                    "Total Apathy": "Possesses profound indifference to mortal affairs, caring only for nature's cycles"
+                                    " or abstract observation. Views life and death academically."
+                },
+                "Chaotic Neutral": {
+                    "Maddening Whim": "Driven purely by impulse, self-interest, and amusement. Acts with total "
+                                      "disregard for promises or consequences.",
+                    "Selective Disregard": "Adheres only to one strange, personal principle (e.g., 'always steal shiny "
+                                           "objects'). Breaks all other rules without hesitation."
+                },
                 "Lawful Evil": {
-                    "Veiled Tyrant": "Wields laws, contracts, and wealth like weapons; they commit grave evil, "
+                    "Veiled Tyrant": "Aims to wields laws, contracts, and wealth like weapons; they commit grave evil, "
                                      "yet remain technically within the letter of the law."
                 },
                 "Neutral Evil": {
-                    "Master Mind": "Wears the mask of other alignments to manipulate people towards their goals."
+                    "Master Mind": "Tries to wear the mask of other alignments to manipulate people towards "
+                                   "their goals."
                 },
                 "Chaotic Evil": {
                     "Twisted by darkness": "Are their acts guided by a malignant external force, or are they merely "

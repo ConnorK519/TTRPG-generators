@@ -65,21 +65,25 @@ def validate_data(args):
     order = args.get("order").title() if args.get("order") else roll_order()
     morality = args.get("morality").title() if args.get("morality") else roll_morality()
 
+    # Adds names to the validated data if present.
     validated_data = {
         "firstname": args.get("firstname").title() if args.get("firstname") else None,
         "surname": args.get("surname").title() if args.get("surname") else None
     }
 
+    # Checks order axis is present and if so validates it.
     if order and not check_order_exists(order):
         raise ValueError(f"Invalid order axis: {order}. Valid orders: {ALIGNMENT_DATA["order"]}")
 
     validated_data["order"] = order
 
+    # Checks morality axis is present and if so validates it.
     if morality and not check_morality_exists(morality):
         raise ValueError(f"Invalid morality axis: {morality}. Valid moralities: {ALIGNMENT_DATA["morality"]}")
 
     validated_data["morality"] = morality
 
+    # Sets the match pattern for how to validate the data
     name_data_pattern = (bool(race), bool(genre), bool(gender))
 
     match name_data_pattern:
@@ -158,82 +162,6 @@ def validate_data(args):
             validated_data["genre"] = genre
             validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
             pass
-
-    # name_data_set = False
-    #
-    # Handles the case when a full set of valid data is passed.
-    # if race and genre and gender:
-    #     valid_race = check_race_exists(race)
-    #     if not valid_race:
-    #         raise ValueError(f"Invalid race: {race} for generator. Valid races: {list(NAME_DATA.keys())}.")
-    #     valid_genre = check_genre_exists(race, genre)
-    #     if not valid_genre:
-    #         raise ValueError(f"Invalid genre: {genre} for race: {race}. Valid races: {list(NAME_DATA[race].keys())}.")
-    #     valid_gender = check_gender_exists(race, genre, gender)
-    #     if not valid_gender:
-    #         raise ValueError()
-    #     validated_data["race"] = race
-    #     validated_data["genre"] = genre
-    #     validated_data["gender"] = gender
-    #     name_data_set = True
-    #
-    # # Retrieve pre-defined validation sets from global data structures.
-    # if gender and not name_data_set:
-    #     valid_gender_to_genre_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"].get(gender)
-    #     valid_gender_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"].get(gender)
-    #     if not valid_gender_to_genre_keys:
-    #         raise ValueError()
-    #
-    #     if genre and genre not in valid_gender_to_genre_keys:
-    #         raise ValueError()
-    #     elif genre and not race:
-    #         validated_data["genre"] = genre
-    #         races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
-    #         valid_races = [race for race in races if race in valid_gender_to_race_keys]
-    #         validated_data["race"] = roll_race(valid_races=valid_races)
-    #
-    #     if not valid_gender_to_race_keys:
-    #         raise ValueError()
-    #
-    #     if race and race not in valid_gender_to_race_keys:
-    #         raise ValueError()
-    #     elif race and not genre:
-    #         validated_data["race"] = race
-    #         genres = list(NAME_DATA[race].keys())
-    #         valid_genres = [genre for genre in genres if genre in valid_gender_to_genre_keys]
-    #         validated_data["genre"] = roll_genre(race=race, valid_genres=valid_genres)
-    #
-    #     if gender and not race and not genre:
-    #         validated_data["genre"] = random.choice(valid_gender_to_genre_keys)
-    #         races = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(validated_data["genre"])
-    #         valid_races = [race for race in races if race in valid_gender_to_race_keys]
-    #         validated_data["race"] = roll_race(valid_races=valid_races)
-    #     validated_data["gender"] = gender
-    #
-    # if genre and not gender and not name_data_set:
-    #     valid_genre_to_race_keys = GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"].get(genre)
-    #     if not valid_genre_to_race_keys:
-    #         raise ValueError()
-    #     if race and race not in valid_genre_to_race_keys:
-    #         raise ValueError()
-    #     elif race:
-    #         validated_data["race"] = race
-    #         validated_data["genre"] = genre
-    #         validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
-    #     else:
-    #         validated_data["race"] = roll_race(valid_races=valid_genre_to_race_keys)
-    #         validated_data["genre"] = genre
-    #         validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
-    #
-    # no_genre_or_gender = not genre and not gender
-    # only_race = race and no_genre_or_gender
-    # no_params = not race and no_genre_or_gender
-    # if only_race and not check_race_exists(race):
-    #     raise ValueError(f"Invalid race: {race} for generator. Valid races: {list(NAME_DATA.keys())}.")
-    # if only_race or no_params:
-    #     validated_data["race"] = race if race else roll_race()
-    #     validated_data["genre"] = roll_genre(validated_data["race"])
-    #     validated_data["gender"] = roll_gender(validated_data["race"], validated_data["genre"])
     return validated_data
 
 
@@ -274,6 +202,9 @@ def generate_traits(order=None, morality=None, alignment=None):
         },
         "morality traits": {
 
+        },
+        "alignment trait": {
+
         }
     }
     order_trait_count = 1
@@ -287,6 +218,12 @@ def generate_traits(order=None, morality=None, alignment=None):
 
     morality_data = alignment_traits["morality"][morality]
     available_morality_keys = list(morality_data.keys())
+
+    alignment_data = alignment_traits["alignment"][alignment]
+    available_alignment_keys = list(alignment_data.keys())
+
+    alignment_key = random.choice(available_alignment_keys)
+    traits["alignment trait"][alignment_key] = alignment_data[alignment_key]
 
     while len(traits["order traits"].keys()) < order_trait_count:
         unpicked_order_traits = set(available_order_keys) - set(traits["order traits"].keys())
@@ -327,12 +264,12 @@ def generate_npc(args):
 
     firstname = validated_data.get("firstname")
     surname = validated_data.get("surname")
+    name = generate_name(race=race, genre=genre, gender=gender, firstname=firstname, surname=surname)
 
     order = validated_data.get("order")
     morality = validated_data.get("morality")
     alignment = "True Neutral" if order == "Neutral" and morality == "Neutral" else f"{order} {morality}"
 
-    name = generate_name(race=race, genre=genre, gender=gender, firstname=firstname, surname=surname)
     stats = generate_stats()
     traits = generate_traits(order=order, morality=morality, alignment=alignment)
     npc = {
