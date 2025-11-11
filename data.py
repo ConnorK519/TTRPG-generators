@@ -145,7 +145,12 @@ GENERATION_DATA = {
     },
     "class_data": {
         "Artificer": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 2,
+            "features": {
+                "Magical Tinkering": "",
+                "Spellcasting": ""
+            }
         },
         "Barbarian": {
             "hit dice": 12
@@ -268,10 +273,12 @@ GENERATION_DATA = {
                                            "objects'). Breaks all other rules without hesitation."
                 },
                 "Lawful Evil": {
+                    # Needs moving
                     "Veiled Tyrant": "Aims to wields laws, contracts, and wealth like weapons; they commit grave evil, "
                                      "yet remain technically within the letter of the law."
                 },
                 "Neutral Evil": {
+                    # Needs moving
                     "Master Mind": "Tries to wear the mask of other alignments to manipulate people towards "
                                    "their goals."
                 },

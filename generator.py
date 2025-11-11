@@ -1,11 +1,15 @@
+import math
 import random
 from data import GENERATION_DATA
 
 NAME_DATA = GENERATION_DATA["name_data"]
 NAME_DATA_VALIDATION = GENERATION_DATA["validation_data"]["name_data"]
+
 CLASS_DATA = GENERATION_DATA["class_data"]
+
 ALIGNMENT_DATA = GENERATION_DATA["alignment_data"]
-PERSONALITY_DATA = GENERATION_DATA["trait_data"]
+
+TRAIT_DATA = GENERATION_DATA["trait_data"]
 
 
 def roll_race(valid_races=None):
@@ -173,14 +177,29 @@ def generate_name(race=None, genre=None, gender=None, firstname=None, surname=No
     return full_name
 
 
+def generate_class_data():
+    pass
+
+
 def generate_stats():
     stats = {
-        "Strength": 0,
-        "Dexterity": 0,
-        "Constitution": 0,
-        "Intelligence": 0,
-        "Wisdom": 0,
-        "Charisma": 0
+        "strength": {
+        },
+        "dexterity": {
+
+        },
+        "constitution": {
+
+        },
+        "intelligence": {
+
+        },
+        "wisdom": {
+
+        },
+        "charisma": {
+
+        }
     }
     for stat in stats.keys():
         lowest_roll = 7
@@ -190,12 +209,13 @@ def generate_stats():
             total += roll
             if roll < lowest_roll:
                 lowest_roll = roll
-        stats[stat] = total - lowest_roll
+        stats[stat]["value"] = total - lowest_roll
+        stats[stat]["modifier"] = math.floor((stats[stat]["value"] - 10) / 2)
     return stats
 
 
 def generate_traits(order=None, morality=None, alignment=None):
-    alignment_traits = PERSONALITY_DATA["alignment_traits"]
+    alignment_traits = TRAIT_DATA["alignment_traits"]
     traits = {
         "order traits": {
 
@@ -272,6 +292,7 @@ def generate_npc(args):
 
     stats = generate_stats()
     traits = generate_traits(order=order, morality=morality, alignment=alignment)
+
     npc = {
         "name": name,
         "race": race,
