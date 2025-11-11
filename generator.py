@@ -216,6 +216,8 @@ def generate_stats():
 
 def generate_traits(order=None, morality=None, alignment=None):
     alignment_traits = TRAIT_DATA["alignment_traits"]
+    ego_traits = TRAIT_DATA["ego"]
+
     traits = {
         "order traits": {
 
@@ -224,6 +226,9 @@ def generate_traits(order=None, morality=None, alignment=None):
 
         },
         "alignment trait": {
+
+        },
+        "ego trait": {
 
         }
     }
@@ -244,6 +249,13 @@ def generate_traits(order=None, morality=None, alignment=None):
 
     alignment_key = random.choice(available_alignment_keys)
     traits["alignment trait"][alignment_key] = alignment_data[alignment_key]
+
+    ego_level = random.choice(list(ego_traits.keys()))
+    ego_level_data = ego_traits[ego_level]
+    available_ego_keys = list(ego_traits[ego_level].keys())
+
+    ego_key = random.choice(available_ego_keys)
+    traits["ego trait"][ego_key] = ego_level_data[ego_key]
 
     while len(traits["order traits"].keys()) < order_trait_count:
         unpicked_order_traits = set(available_order_keys) - set(traits["order traits"].keys())

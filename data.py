@@ -273,14 +273,11 @@ GENERATION_DATA = {
                                            "objects'). Breaks all other rules without hesitation."
                 },
                 "Lawful Evil": {
-                    # Needs moving
-                    "Veiled Tyrant": "Aims to wields laws, contracts, and wealth like weapons; they commit grave evil, "
-                                     "yet remain technically within the letter of the law."
+                    "Masked Devil": "Stays within the confines of the law committing evils where they can get away "
+                                    "with it."
                 },
                 "Neutral Evil": {
-                    # Needs moving
-                    "Master Mind": "Tries to wear the mask of other alignments to manipulate people towards "
-                                   "their goals."
+                    "Calculating Shadow": "Hides the evil they commit with a balanced, flexible and adaptable mind."
                 },
                 "Chaotic Evil": {
                     "Twisted by darkness": "Are their acts guided by a malignant external force, or are they merely "
@@ -290,26 +287,23 @@ GENERATION_DATA = {
         },
         "ego": {
             "high": {
-                "Arrogant": "",
-                "Self-assured": "",
-                "Bold": "",
-                "Overconfident": ""
+                "Arrogant": "Has an an exaggerated sense of their importance and/or abilities.",
+                "Self-assured": "Confident in their own abilities and/or character.",
+                "Bold": "Willing to take risks while being confident and courageous.",
+                "Overconfident": "Is unjustifiably confident and cocky."
             },
             "medium": {
-                "Humble": "",
-                "Balanced": "",
-                "Modest": "",
-                "Realistic": ""
+                "Humble": "Confident in their abilities but avoids boasting or taking credit for shared success.",
+                "Balanced": "Isn't over or under confident.",
+                "Modest": "Unassuming in the estimation of their abilities and/or achievements.",
+                "Realistic": "Takes things as they come knowing they can only do whats within their ability range."
             },
             "low": {
-                "Insecure": "",
-                "Timid": "",
-                "Self-doubting": "",
-                "Submissive": ""
+                "Insecure": "Uncertain and/or anxious about themself and their abilities.",
+                "Timid": "Lacks courage and/or confidence and is easily scared.",
+                "Self-doubting": "Questions their ability to do anything of value.",
+                "Submissive": "Folds to the will and whims of others easily even doing stuff they don't want to."
             },
-        },
-        "social": {
-
         }
     }
 }
