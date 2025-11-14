@@ -69,10 +69,15 @@ def validate_data(args):
     order = args.get("order").title() if args.get("order") else roll_order()
     morality = args.get("morality").title() if args.get("morality") else roll_morality()
 
+    class_ = args.get("class").title() if args.get("class") else None
+    assign_class = bool(args.get("assign-class"))
+    job = args.get("job").title() if args.get("job") else None
+    assign_job = bool(args.get("assign-job"))
+
     # Adds names to the validated data if present.
     validated_data = {
         "firstname": args.get("firstname").title() if args.get("firstname") else None,
-        "surname": args.get("surname").title() if args.get("surname") else None
+        "surname": args.get("surname").title() if args.get("surname") else None,
     }
 
     # Checks order axis is present and if so validates it.
@@ -86,6 +91,20 @@ def validate_data(args):
         raise ValueError(f"Invalid morality axis: {morality}. Valid moralities: {ALIGNMENT_DATA["morality"]}")
 
     validated_data["morality"] = morality
+
+    if class_ and class_ not in CLASS_DATA.keys():
+        raise ValueError(f"Invalid class: {class_}. Valid classes: {list(CLASS_DATA.keys())}")
+
+    if class_:
+        validated_data["class"] = {"name": class_} | CLASS_DATA[class_]
+    elif not class_ and assign_class:
+        new_class = roll_class()
+        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]
+    elif not class_ and random.choice(range(1, 101)) <= 30:
+        new_class = roll_class()
+        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]
+    else:
+        validated_data["class"] = class_
 
     # Sets the match pattern for how to validate the data
     name_data_pattern = (bool(race), bool(genre), bool(gender))
@@ -310,6 +329,7 @@ def generate_npc(args):
         "race": race,
         "genre": genre,
         "gender": gender,
+        "class": validated_data["class"],
         "alignment": alignment,
         "stats": stats,
         "traits": traits,

@@ -153,40 +153,101 @@ GENERATION_DATA = {
             }
         },
         "Barbarian": {
-            "hit dice": 12
+            "hit dice": 12,
+            "cantrips": 0,
+            "features": {
+                "Rage": "",
+                "Unarmored Defense": ""
+            }
         },
         "Bard": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Spellcasting": "",
+                "Bardic Inspiration": ""
+            }
         },
         "Cleric": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Spellcasting": "",
+                "Divine Domain": ""
+            }
         },
         "Druid": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Druidic": "",
+                "Spellcasting": ""
+            }
         },
         "Fighter": {
-            "hit dice": 10
+            "hit dice": 10,
+            "cantrips": 0,
+            "features": {
+                "Fighting Style": "",
+                "Second Wind": ""
+            }
         },
         "Monk": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Unarmored Defense": "",
+                "Martial Arts": ""
+            }
         },
         "Paladin": {
-            "hit dice": 10
+            "hit dice": 10,
+            "cantrips": 0,
+            "features": {
+                "Divine Sense": "",
+                "Lay on Hands": ""
+            }
         },
         "Ranger": {
-            "hit dice": 10
+            "hit dice": 10,
+            "cantrips": 0,
+            "features": {
+                "Favored Enemy": "",
+                "Natural Explorer": ""
+            }
         },
         "Rogue": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Expertise": "",
+                "Sneak Attack": "",
+                "Thieves’ Cant": ""
+            }
         },
         "Sorcerer": {
-            "hit dice": 6
+            "hit dice": 6,
+            "cantrips": 0,
+            "features": {
+                "Spellcasting": "",
+                "Sorcerous Origin": ""
+            }
         },
         "Warlock": {
-            "hit dice": 8
+            "hit dice": 8,
+            "cantrips": 0,
+            "features": {
+                "Otherworldly Patron": "",
+                "Pact Magic": ""
+            }
         },
         "Wizard": {
-            "hit dice": 6
+            "hit dice": 6,
+            "cantrips": 0,
+            "features": {
+                "Spellcasting": "",
+                "Arcane Recovery": ""
+            }
         }
     },
     "alignment_data": {
@@ -241,10 +302,8 @@ GENERATION_DATA = {
                               "protect the innocent and uphold their sacred code of justice."
                 },
                 "Neutral Good": {
-                    "Moral Calculus": "Willing to break laws and sacrifice a few to achieve the greatest good for the "
-                                      "majority with cold calculation of number of lives saved.",
-                    "Vigilante": "Committed to delivering justice efficiently; breaks flawed laws and bypasses corrupt "
-                                 "institutions when the greatest good demands immediate action."
+                    "Grim Utility": "Will reluctantly abandon procedure to secure the greatest good, choosing the path "
+                                    "that saves the most lives.",
                 },
                 "Chaotic Good": {
                     "Martyr to Ideals": "Driven by absolute conviction, they impulsively sacrifice everything, even "
@@ -270,7 +329,9 @@ GENERATION_DATA = {
                     "Maddening Whim": "Driven purely by impulse, self-interest, and amusement. Acts with total "
                                       "disregard for promises or consequences.",
                     "Selective Disregard": "Adheres only to one strange, personal principle (e.g., 'always steal shiny "
-                                           "objects'). Breaks all other rules without hesitation."
+                                           "objects'). Breaks all other rules without hesitation.",
+                    "Sovereign Ego": "Prioritizes total personal autonomy; acts purely by their own will and reacts "
+                                     "aggressively to any perceived threat."
                 },
                 "Lawful Evil": {
                     "Masked Devil": "Stays within the confines of the law committing evils where they can get away "
@@ -281,7 +342,9 @@ GENERATION_DATA = {
                 },
                 "Chaotic Evil": {
                     "Twisted by darkness": "Are their acts guided by a malignant external force, or are they merely "
-                                           "the result of deep psychological trauma and a fractured mind?"
+                                           "the result of deep psychological trauma and a fractured mind?",
+                    "Chaos Incarnate": "They leave a trail of chaos and corpses of people who displease them "
+                                       "wherever they go."
                 },
             }
         },
@@ -304,6 +367,25 @@ GENERATION_DATA = {
                 "Self-doubting": "Questions their ability to do anything of value.",
                 "Submissive": "Folds to the will and whims of others easily even doing stuff they don't want to."
             },
+        },
+        "temperament": {
+            "positive": {
+                "Jovial": "Consistently cheerful, friendly, and good-humored, regardless of minor setbacks.",
+                "Sanguine": "Optimistic and enthusiastic; treats every situation, even negative ones, as an "
+                            "opportunity or adventure.",
+                "Ebullient": "Characterized by high enthusiasm, exuberance, and bubbling energy."
+            },
+            "neutral": {
+                "Phlegmatic": "Calm, slow to anger, and generally placid; maintains an even emotional keel under "
+                              "pressure.",
+                "Stoic": "Endures pain, hardship, or emotional distress without showing feelings or complaining.",
+                "Mellow": "Relaxed, easygoing, and agreeable; rarely becomes anxious or highly motivated."
+            },
+            "negative": {
+                "Volatile": "Prone to sudden, unpredictable, and intense emotional changes or outbursts.",
+                "Irascible": "Easily provoked to anger or irritability; has a quick temper.",
+                "Melancholy": "Pensive, reflective, and prone to thoughtful sadness or a state of quiet depression."
+            }
         }
     }
 }
