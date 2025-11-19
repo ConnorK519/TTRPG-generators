@@ -7,6 +7,8 @@ NAME_DATA_VALIDATION = GENERATION_DATA["validation_data"]["name_data"]
 
 CLASS_DATA = GENERATION_DATA["class_data"]
 
+RACE_DATA = GENERATION_DATA["race_data"]
+
 ALIGNMENT_DATA = GENERATION_DATA["alignment_data"]
 
 TRAIT_DATA = GENERATION_DATA["trait_data"]
@@ -59,6 +61,20 @@ def roll_class():
     return random.choice(list(CLASS_DATA.keys()))
 
 
+def roll_stat_values():
+    stat_value_list = []
+    for _ in range(1, 7):
+        lowest_roll = 7
+        total = 0
+        for i in range(0, 4):
+            roll = random.choice(range(1, 7))
+            total += roll
+            if roll < lowest_roll:
+                lowest_roll = roll
+        stat_value_list.append(total - lowest_roll)
+    return stat_value_list
+
+
 def validate_data(args):
     # Normalize inputs to Title Case for case-insensitive dictionary lookup.
     race = args.get("race").title() if args.get("race") else None
@@ -71,13 +87,12 @@ def validate_data(args):
 
     class_ = args.get("class").title() if args.get("class") else None
     assign_class = bool(args.get("assign-class"))
-    job = args.get("job").title() if args.get("job") else None
-    assign_job = bool(args.get("assign-job"))
 
     # Adds names to the validated data if present.
     validated_data = {
         "firstname": args.get("firstname").title() if args.get("firstname") else None,
         "surname": args.get("surname").title() if args.get("surname") else None,
+        "opt_stats": bool(args.get("opt-stats"))
     }
 
     # Checks order axis is present and if so validates it.
@@ -96,13 +111,13 @@ def validate_data(args):
         raise ValueError(f"Invalid class: {class_}. Valid classes: {list(CLASS_DATA.keys())}")
 
     if class_:
-        validated_data["class"] = {"name": class_} | CLASS_DATA[class_]
+        validated_data["class"] = {"name": class_} | CLASS_DATA[class_]["class data"]
     elif not class_ and assign_class:
         new_class = roll_class()
-        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]
+        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
     elif not class_ and random.choice(range(1, 101)) <= 30:
         new_class = roll_class()
-        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]
+        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
     else:
         validated_data["class"] = class_
 
@@ -196,41 +211,51 @@ def generate_name(race=None, genre=None, gender=None, firstname=None, surname=No
     return full_name
 
 
-def generate_class_data():
-    pass
-
-
-def generate_stats():
+def generate_stats(race, class_=None, opt_stats=None):
     stats = {
-        "strength": {
-        },
-        "dexterity": {
-
-        },
-        "constitution": {
-
-        },
-        "intelligence": {
-
-        },
-        "wisdom": {
-
-        },
-        "charisma": {
-
-        }
     }
-    for stat in stats.keys():
-        lowest_roll = 7
-        total = 0
-        for i in range(0, 4):
-            roll = random.choice(range(1, 7))
-            total += roll
-            if roll < lowest_roll:
-                lowest_roll = roll
-        stats[stat]["value"] = total - lowest_roll
-        stats[stat]["modifier"] = math.floor((stats[stat]["value"] - 10) / 2)
+    race_stat_bonuses = RACE_DATA[race]["stat bonuses"]
+    class_data = CLASS_DATA.get(class_)
+    stat_list = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
+    if class_data:
+        main_stat = class_data["main stat"].copy()
+        secondary_stats = class_data["secondary stats"].copy()
+        dump_stats = class_data["dump stats"].copy()
+        main_stat_pool = class_data.get("main stat pooling", []).copy()
+        secondary_stat_pool = class_data.get("secondary stats pooling", []).copy()
+        if main_stat_pool:
+            random.shuffle(main_stat_pool)
+            main_stat += [main_stat_pool.pop(0)]
+            secondary_stats += main_stat_pool
+        if secondary_stat_pool:
+            random.shuffle(main_stat)
+            random.shuffle(secondary_stat_pool)
+            secondary_stats += [secondary_stat_pool.pop(0)]
+            dump_stats += secondary_stat_pool
+        random.shuffle(secondary_stats)
+        random.shuffle(dump_stats)
+        stat_list = main_stat + secondary_stats + dump_stats
+    stat_values = roll_stat_values()
+    if opt_stats:
+        stat_values.sort(reverse=True)
+    else:
+        random.shuffle(stat_list)
+    for i in range(0, 6):
+        stat = stat_list[i]
+        value = stat_values[i]
+        racial_bonus = race_stat_bonuses.get(stat, 0)
+        final_value = value + racial_bonus
+        stats[stat] = {
+            "value": final_value,
+            "modifier": math.floor((final_value - 10) / 2),
+            "race bonus": racial_bonus
+        }
     return stats
+
+
+def calculate_hp(class_data=None, con_bonus=None):
+    base_hp = class_data['hit dice'] if class_data else random.choice(range(5, 11))
+    return base_hp + con_bonus
 
 
 def generate_traits(order=None, morality=None, alignment=None):
@@ -321,17 +346,32 @@ def generate_npc(args):
     morality = validated_data.get("morality")
     alignment = "True Neutral" if order == "Neutral" and morality == "Neutral" else f"{order} {morality}"
 
-    stats = generate_stats()
+    class_data = validated_data["class"]
+    class_name = None
+
+    if class_data:
+        class_name = class_data["name"]
+
+    stats = generate_stats(race=race, class_=class_name, opt_stats=validated_data["opt_stats"])
     traits = generate_traits(order=order, morality=morality, alignment=alignment)
+    hp = calculate_hp(class_data=class_data, con_bonus=stats["constitution"]["modifier"])
 
     npc = {
         "name": name,
+        "hp": hp,
         "race": race,
         "genre": genre,
         "gender": gender,
-        "class": validated_data["class"],
+        "class": class_data,
         "alignment": alignment,
         "stats": stats,
         "traits": traits,
     }
     return npc
+
+# for _ in range(0, 1000):
+#     npc = generate_npc({"class": "Wizard", "opt-stats": "on"})
+#     print(npc)
+#     if not npc["stats"].get("strength") or not npc["stats"].get("dexterity") or not npc["stats"].get("constitution") or not npc["stats"].get("charisma") or not npc["stats"].get("wisdom") or not npc["stats"].get("intelligence"):
+#         print("critical stat error: missing stat in stats dict")
+#         break

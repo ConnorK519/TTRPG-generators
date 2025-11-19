@@ -143,110 +143,250 @@ GENERATION_DATA = {
             }
         }
     },
+    "race_data": {
+        "Human": {
+            "stat bonuses": {
+                "strength": 1,
+                "dexterity": 1,
+                "constitution": 1,
+                "intelligence": 1,
+                "wisdom": 1,
+                "charisma": 1
+            }
+        },
+        "Elf": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+        "Dwarf": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+        "Android": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+        "Cyborg": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+        "Alien": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+        "Old One": {
+            "stat bonuses": {
+                "strength": 0,
+                "dexterity": 0,
+                "constitution": 0,
+                "intelligence": 0,
+                "wisdom": 0,
+                "charisma": 0
+            }
+        },
+    },
     "class_data": {
         "Artificer": {
-            "hit dice": 8,
-            "cantrips": 2,
-            "features": {
-                "Magical Tinkering": "",
-                "Spellcasting": ""
+            "main stat": ["intelligence"],
+            "secondary stats": ["dexterity", "constitution"],
+            "dump stats": ["wisdom", "charisma", "strength"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 2,
+                "features": {
+                    "Magical Tinkering": "",
+                    "Spellcasting": ""
+                }
             }
         },
         "Barbarian": {
-            "hit dice": 12,
-            "cantrips": 0,
-            "features": {
-                "Rage": "",
-                "Unarmored Defense": ""
+            "main stat": ["strength"],
+            "secondary stats": ["dexterity", "constitution"],
+            "dump stats": ["wisdom", "charisma", "intelligence"],
+            "class data": {
+                "hit dice": 12,
+                "cantrips": 0,
+                "features": {
+                    "Rage": "",
+                    "Unarmored Defense": ""
+                }
             }
         },
         "Bard": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Spellcasting": "",
-                "Bardic Inspiration": ""
+            "main stat": ["charisma"],
+            "secondary stats": ["dexterity", "constitution"],
+            "dump stats": ["strength", "wisdom", "intelligence"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Spellcasting": "",
+                    "Bardic Inspiration": ""
+                }
             }
         },
         "Cleric": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Spellcasting": "",
-                "Divine Domain": ""
+            "main stat": ["wisdom"],
+            "secondary stats": ["constitution", "strength"],
+            "dump stats": ["intelligence", "dexterity", "charisma"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Spellcasting": "",
+                    "Divine Domain": ""
+                }
             }
         },
         "Druid": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Druidic": "",
-                "Spellcasting": ""
+            "main stat": ["wisdom"],
+            "secondary stats": ["dexterity", "constitution"],
+            "dump stats": ["intelligence", "charisma", "strength"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Druidic": "",
+                    "Spellcasting": ""
+                }
             }
         },
         "Fighter": {
-            "hit dice": 10,
-            "cantrips": 0,
-            "features": {
-                "Fighting Style": "",
-                "Second Wind": ""
+            "main stat pooling": ["strength", "dexterity"],
+            "main stat": [],
+            "secondary stats": ["constitution"],
+            "dump stats": ["intelligence", "wisdom", "charisma"],
+            "class data": {
+                "hit dice": 10,
+                "cantrips": 0,
+                "features": {
+                    "Fighting Style": "",
+                    "Second Wind": ""
+                }
             }
         },
         "Monk": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Unarmored Defense": "",
-                "Martial Arts": ""
+            "main stat pooling": ["dexterity", "wisdom"],
+            "main stat": [],
+            "secondary stats": ["constitution"],
+            "dump stats": ["intelligence", "strength", "charisma"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Unarmored Defense": "",
+                    "Martial Arts": ""
+                }
             }
         },
         "Paladin": {
-            "hit dice": 10,
-            "cantrips": 0,
-            "features": {
-                "Divine Sense": "",
-                "Lay on Hands": ""
+            "main stat": ["charisma", "strength"],
+            "secondary stats pooling": ["wisdom", "dexterity"],
+            "secondary stats": ["constitution"],
+            "dump stats": ["intelligence"],
+            "class data": {
+                "hit dice": 10,
+                "cantrips": 0,
+                "features": {
+                    "Divine Sense": "",
+                    "Lay on Hands": ""
+                }
             }
         },
         "Ranger": {
-            "hit dice": 10,
-            "cantrips": 0,
-            "features": {
-                "Favored Enemy": "",
-                "Natural Explorer": ""
+            "main stat": ["dexterity"],
+            "secondary stats": ["wisdom", "constitution"],
+            "dump stats": ["intelligence", "charisma", "strength"],
+            "class data": {
+                "hit dice": 10,
+                "cantrips": 0,
+                "features": {
+                    "Favored Enemy": "",
+                    "Natural Explorer": ""
+                }
             }
         },
         "Rogue": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Expertise": "",
-                "Sneak Attack": "",
-                "Thieves’ Cant": ""
+            "main stat": ["dexterity"],
+            "secondary stats": ["constitution"],
+            "dump stats": ["intelligence", "charisma", "strength", "wisdom"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Expertise": "",
+                    "Sneak Attack": "",
+                    "Thieves’ Cant": ""
+                }
             }
         },
         "Sorcerer": {
-            "hit dice": 6,
-            "cantrips": 0,
-            "features": {
-                "Spellcasting": "",
-                "Sorcerous Origin": ""
+            "main stat": ["charisma"],
+            "secondary stats": ["constitution", "dexterity"],
+            "dump stats": ["intelligence", "strength", "wisdom"],
+            "class data": {
+                "hit dice": 6,
+                "cantrips": 0,
+                "features": {
+                    "Spellcasting": "",
+                    "Sorcerous Origin": ""
+                }
             }
         },
         "Warlock": {
-            "hit dice": 8,
-            "cantrips": 0,
-            "features": {
-                "Otherworldly Patron": "",
-                "Pact Magic": ""
+            "main stat": ["charisma"],
+            "secondary stats": ["constitution", "dexterity"],
+            "dump stats": ["intelligence", "strength", "wisdom"],
+            "class data": {
+                "hit dice": 8,
+                "cantrips": 0,
+                "features": {
+                    "Otherworldly Patron": "",
+                    "Pact Magic": ""
+                }
             }
         },
         "Wizard": {
-            "hit dice": 6,
-            "cantrips": 0,
-            "features": {
-                "Spellcasting": "",
-                "Arcane Recovery": ""
+            "main stat": ["intelligence"],
+            "secondary stats": ["constitution", "dexterity"],
+            "dump stats": ["charisma", "strength", "wisdom"],
+            "class data": {
+                "hit dice": 6,
+                "cantrips": 0,
+                "features": {
+                    "Spellcasting": "",
+                    "Arcane Recovery": ""
+                }
             }
         }
     },
@@ -278,15 +418,17 @@ GENERATION_DATA = {
             },
             "morality": {
                 "Good": {
-                    "Pious": "Devoted to the pursuit of moral excellence or divine will.",
-                    "Just": "Dedicated to fairness and equality in application of ethics.",
-                    "Virtuous": "Possessing high moral standards and righteousness.",
+                    "Merciful": "Shows mercy to their enemies.",
+                    "Forgiving": "Tends to forgive any wrongs committed against them fast.",
+                    "Virtuous": "Adheres to a strict personal moral code, often prioritizing principle over expediency "
+                                "or personal gain.",
                     "Compassionate": "Always Strives to help the poor, downtrodden or those in need."
                 },
                 "Evil": {
                     "Ruthless": "Lacking pity or compassion; cruel and uncompromising.",
                     "Vindictive": "Having a strong desire for revenge in the most harsh way possible.",
-                    "Egoist": "Focused entirely on self-interest; treats others as means to an end.",
+                    "Exploitative": "Sees every other individual purely as a resource to be used and discarded for "
+                                    "personal gain.",
                     "Destructive": "Revels in destruction of the property, home or mental state of others."
                 },
                 "Neutral": {
