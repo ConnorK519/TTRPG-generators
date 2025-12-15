@@ -534,32 +534,49 @@ GENERATION_DATA = {
 
 
 def set_valid_name_data_keys():
-    gender_to_genre = {}
     gender_to_race = {}
+    gender_to_genre = {}
     genre_to_race = {}
+    genre_to_gender = {}
+    race_to_genre = {}
+    race_to_gender = {}
     for race in GENERATION_DATA["name_data"]:
+        race_to_genre[race] = list(GENERATION_DATA["name_data"][race].keys())
+        if race not in race_to_gender.keys():
+            race_to_gender[race] = set()
         for genre in GENERATION_DATA["name_data"][race]:
             if genre not in genre_to_race.keys():
                 genre_to_race[genre] = set()
+            if genre not in genre_to_gender.keys():
+                genre_to_gender[genre] = set()
             genre_to_race[genre].add(race)
             for gender in GENERATION_DATA["name_data"][race][genre]:
                 if gender == "Surnames":
                     continue
+                genre_to_gender[genre].add(gender)
                 if gender not in gender_to_genre.keys():
                     gender_to_genre[gender] = set()
                 gender_to_genre[gender].add(genre)
                 if gender not in gender_to_race.keys():
                     gender_to_race[gender] = set()
                 gender_to_race[gender].add(race)
+                race_to_gender[race].add(gender)
+    for gender in gender_to_race:
+        gender_to_race[gender] = list(gender_to_race[gender])
     for gender in gender_to_genre:
         gender_to_genre[gender] = list(gender_to_genre[gender])
     for genre in genre_to_race:
         genre_to_race[genre] = list(genre_to_race[genre])
-    for gender in gender_to_race:
-        gender_to_race[gender] = list(gender_to_race[gender])
-    GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"] = gender_to_genre
+    for genre in genre_to_gender:
+        genre_to_gender[genre] = list(genre_to_gender[genre])
+    for race in race_to_gender:
+        race_to_gender[race] = list(race_to_gender[race])
     GENERATION_DATA["validation_data"]["name_data"]["gender_to_race"] = gender_to_race
+    GENERATION_DATA["validation_data"]["name_data"]["gender_to_genre"] = gender_to_genre
     GENERATION_DATA["validation_data"]["name_data"]["genre_to_race"] = genre_to_race
+    GENERATION_DATA["validation_data"]["name_data"]["genre_to_gender"] = genre_to_gender
+    GENERATION_DATA["validation_data"]["name_data"]["race_to_genre"] = race_to_genre
+    GENERATION_DATA["validation_data"]["name_data"]["race_to_gender"] = race_to_gender
 
 
 set_valid_name_data_keys()

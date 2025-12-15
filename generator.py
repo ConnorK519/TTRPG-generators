@@ -115,7 +115,7 @@ def validate_data(args):
     elif not class_ and assign_class:
         new_class = roll_class()
         validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
-    elif not class_ and random.choice(range(1, 101)) <= 30:
+    elif not class_ and random.choice(range(1, 101)) <= 50:
         new_class = roll_class()
         validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
     else:
@@ -369,9 +369,33 @@ def generate_npc(args):
     }
     return npc
 
-# for _ in range(0, 1000):
-#     npc = generate_npc({"class": "Wizard", "opt-stats": "on"})
-#     print(npc)
-#     if not npc["stats"].get("strength") or not npc["stats"].get("dexterity") or not npc["stats"].get("constitution") or not npc["stats"].get("charisma") or not npc["stats"].get("wisdom") or not npc["stats"].get("intelligence"):
-#         print("critical stat error: missing stat in stats dict")
-#         break
+
+def get_field_data():
+    NAME_VALIDATION_DATA = GENERATION_DATA["validation_data"]["name_data"]
+    data = {
+        "RACE": {
+            "all_races": list(GENERATION_DATA["name_data"].keys()),
+            "race_to_genre": NAME_VALIDATION_DATA["race_to_genre"],
+            "race_to_gender": NAME_VALIDATION_DATA["race_to_gender"]
+        },
+        "GENRE": {
+            "all_genres": list(NAME_VALIDATION_DATA["genre_to_race"].keys()),
+            "genre_to_race": NAME_VALIDATION_DATA["genre_to_race"],
+            "genre_to_gender": NAME_VALIDATION_DATA["genre_to_gender"]
+        },
+        "GENDER": {
+            "all_genders": list(NAME_VALIDATION_DATA["gender_to_race"].keys()),
+            "gender_to_genre": NAME_VALIDATION_DATA["gender_to_genre"],
+            "gender_to_race": NAME_VALIDATION_DATA["gender_to_race"]
+        },
+        "ALIGNMENT": {
+            "order": ALIGNMENT_DATA["order"],
+            "morality": ALIGNMENT_DATA["morality"]
+        },
+        "CLASS": {
+            "all_classes": list(CLASS_DATA.keys())
+        }
+    }
+    return data
+
+

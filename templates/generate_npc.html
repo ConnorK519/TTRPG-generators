@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <form id="npc-form" method="POST" action="{{ url_for('create_npc') }}">
+        <h3>Character Generation Parameters</h3>
+
+        <fieldset class="field-set name-field-set">
+            <legend>Naming</legend>
+
+            <label for="firstname-input">Firstname:</label>
+            <input id="firstname-input" name="firstname" placeholder="Firstname (Optional)">
+
+            <label for="surname-input">Surname:</label>
+            <input id="surname-input" name="surname" placeholder="Surname (Optional)">
+        </fieldset>
+
+        <fieldset class="field-set alignment-field-set">
+            <legend>Alignment</legend>
+            <label for="order-select">Axis of Order:</label>
+            <select id="order-select" name="order">
+                <option value="">Select Order</option>
+                  {% for order in field_data['ALIGNMENT']['order']: %}
+                <option value="{{ order }}">{{ order }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="morality-select">Axis of Morality:</label>
+            <select id="morality-select" name="morality">
+                <option value="">Select Morality</option>
+                   {% for morality in field_data['ALIGNMENT']['morality']: %}
+                <option value="{{ morality }}">{{ morality }}</option>
+                {% endfor %}
+            </select>
+        </fieldset>
+
+        <fieldset class="field-set identity-field-set">
+            <legend>Identity</legend>
+            <label for="race-select">Race:</label>
+            <select id="race-select" name="race">
+                <option value="">Select a Race</option>
+                {% for race in field_data['RACE']['all_races']: %}
+                <option value="{{ race }}">{{ race }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="genre-select">Genre:</label>
+            <select id="genre-select" name="genre">
+                <option value="">Select a Genre</option>
+                  {% for genre in field_data['GENRE']['all_genres']: %}
+                <option value="{{ genre }}">{{ genre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="gender-select">Gender:</label>
+            <select id="gender-select" name="gender">
+                <option value="">Select a Gender</option>
+            </select>
+        </fieldset>
+
+        <fieldset class="field-set class-field-set">
+            <legend>Class</legend>
+            <label for="class-select">Class:</label>
+            <select id="class-select" name="class">
+                <option value="">Select Class</option>
+                {% for class in field_data['CLASS']['all_classes']: %}
+                <option value="{{ class }}">{{ class }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="assign-class-select">Assign Class:</label>
+            <select id="assign-class-select" name="assign-class">
+                <option value="">Coin flip</option>
+                <option>Guaranteed</option>
+                <option>No class</option>
+            </select>
+
+            <label for="opt-stats-checkbox">Optimise Stats:</label>
+            <input id="opt-stats-checkbox" type="checkbox" name="opt-stats">
+        </fieldset>
+        <button type="submit">Generate</button>
+    </form>
+    <div id="npc-list"></div>
+</div>
+<script src="{{ url_for('static', filename='js/generate-npc.js') }}"></script>
+{% endblock %}
