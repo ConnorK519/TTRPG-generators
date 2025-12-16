@@ -20,6 +20,7 @@ width: 100vw;
 display: flex;
 flex-direction: column;
 align-items: center;
+padding-bottom: 1.5rem;
 }
 
 #npc-form {
@@ -60,7 +61,13 @@ width: 90%;
 }
 
 .npc-data {
-width: 80%;
+width: 85%;
+}
+
+.npc-name-tag {
+padding: 0.5rem 0;
+margin: 0.3rem 0;
+border: 1px solid black;
 }
 
 @media (min-width: 768px) {
