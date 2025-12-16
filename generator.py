@@ -261,6 +261,7 @@ def calculate_hp(class_data=None, con_bonus=None):
 def generate_traits(order=None, morality=None, alignment=None):
     alignment_traits = TRAIT_DATA["alignment_traits"]
     ego_traits = TRAIT_DATA["ego"]
+    temperament_traits = TRAIT_DATA["temperament"]
 
     traits = {
         "order traits": {
@@ -273,6 +274,9 @@ def generate_traits(order=None, morality=None, alignment=None):
 
         },
         "ego trait": {
+
+        },
+        "temperament trait": {
 
         }
     }
@@ -296,10 +300,17 @@ def generate_traits(order=None, morality=None, alignment=None):
 
     ego_level = random.choice(list(ego_traits.keys()))
     ego_level_data = ego_traits[ego_level]
-    available_ego_keys = list(ego_traits[ego_level].keys())
+    available_ego_keys = list(ego_level_data.keys())
 
     ego_key = random.choice(available_ego_keys)
     traits["ego trait"][ego_key] = ego_level_data[ego_key]
+
+    temperament_type = random.choice(list(temperament_traits.keys()))
+    temperament_type_data = temperament_traits[temperament_type]
+    available_temperament_keys = list(temperament_type_data.keys())
+
+    temperament_key = random.choice(available_temperament_keys)
+    traits["temperament trait"][temperament_key] = temperament_type_data[temperament_key]
 
     while len(traits["order traits"].keys()) < order_trait_count:
         unpicked_order_traits = set(available_order_keys) - set(traits["order traits"].keys())

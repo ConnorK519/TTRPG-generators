@@ -398,36 +398,49 @@ GENERATION_DATA = {
         "alignment_traits": {
             "order": {
                 "Lawful": {
-                    "Disciplined": "Follows rules and procedures strictly.",
-                    "Methodical": "Approaches tasks in a slow, systematic, and orderly manner.",
-                    "Reliable": "Can be trusted to fulfill duties and promises.",
-                    "Rigid": "Inflexible in thought or action; adheres strictly to tradition."
+                    "Disciplined": "Adheres strictly to established procedures and protocols, ensuring fairness and "
+                                   "order in all endeavors.",
+                    "Methodical": "Approaches tasks with meticulous attention to detail, carefully following "
+                                  "established protocols and guidelines to achieve desired outcomes.",
+                    "Reliable": "Upholds commitments and promises, honoring agreements and upholding the law, "
+                                "ensuring stability and predictability in social interactions.",
+                    "Rigid": "Unwaveringly adheres to tradition and established norms, resisting change or innovation "
+                             "that might disrupt societal order."
                 },
                 "Chaotic": {
-                    "Impulsive": "Acts quickly based on instinct or feeling, ignoring consequences.",
-                    "Unpredictable": "Behavior is erratic and difficult to anticipate.",
-                    "Spontaneous": "Loves unplanned action and thrives on novelty.",
-                    "Turbulent": "Prone to sudden, violent, or intense internal disorder."
+                    "Impulsive": "Acts on instinct without hesitation, often leaping into action before thinking "
+                                 "through the consequences.",
+                    "Unpredictable": "Exhibits erratic behavior, making it difficult for others to anticipate their "
+                                     "actions or reactions.",
+                    "Spontaneous": "Thrives on novelty and unpredictability, embracing opportunities as they arise.",
+                    "Turbulent": "Experiences intense emotional turmoil, causing internal conflicts that can lead to "
+                                 "impulsive decisions."
                 },
                 "Neutral": {
-                    "Flexible": "Easily adapts to changing circumstances or rules.",
-                    "Uncommitted": "Reluctant to take firm sides or bind themselves to a cause.",
-                    "Situational": "Decisions are made based on the current context rather than abstract rules.",
-                    "Moderate": "Prefers balance and avoids extremes in action or ideology."
+                    "Flexible": "Adapts to changing circumstances while remaining committed to underlying principles "
+                                "and values.",
+                    "Uncommitted": "Refrains from taking a strong stance or committing to a particular cause, "
+                                   "preferring to maintain objectivity.",
+                    "Situational": "Makes decisions based on the current context, balancing short-term needs with "
+                                   "long-term goals and values.",
+                    "Moderate": "Avoids extremes in action or ideology, seeking a balance that allows for flexibility "
+                                "and adaptability."
                 },
             },
             "morality": {
                 "Good": {
-                    "Merciful": "Shows mercy to their enemies.",
-                    "Forgiving": "Tends to forgive any wrongs committed against them fast.",
-                    "Virtuous": "Adheres to a strict personal moral code, often prioritizing principle over expediency "
-                                "or personal gain.",
-                    "Compassionate": "Always Strives to help the poor, downtrodden or those in need."
+                    "Altruistic": "Prioritizes the well-being of others above self-interest and personal gain.",
+                    "Compassionate": "Possesses deep empathy for the suffering of others, driven to actively "
+                                     "intervene to alleviate distress.",
+                    "Clement": "Exhibits mercy and restraint toward a defeated or helpless individual, refusing to "
+                               "inflict excessive or cruel punishment.",
+                    "Forgiving": "Tends toward rapid forgiveness of personal wrongs, actively choosing to release "
+                                 "grudges quickly."
                 },
                 "Evil": {
                     "Ruthless": "Lacking pity or compassion; cruel and uncompromising.",
-                    "Vindictive": "Having a strong desire for revenge in the most harsh way possible.",
-                    "Exploitative": "Sees every other individual purely as a resource to be used and discarded for "
+                    "Vindictive": "Has a strong desire for revenge in the most harsh way possible.",
+                    "Exploitative": "Sees other individuals purely as a resource to be used and discarded for "
                                     "personal gain.",
                     "Destructive": "Revels in destruction of the property, home or mental state of others."
                 },
@@ -477,7 +490,7 @@ GENERATION_DATA = {
                 },
                 "Lawful Evil": {
                     "Masked Devil": "Stays within the confines of the law committing evils where they can get away "
-                                    "with it."
+                                    "with it, using the law as their sword and shield."
                 },
                 "Neutral Evil": {
                     "Calculating Shadow": "Hides the evil they commit with a balanced, flexible and adaptable mind."

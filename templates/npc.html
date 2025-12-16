@@ -1,20 +1,33 @@
 <details class="npc-data">
-<summary>Name: {{ new_npc["name"] }} -
+<summary><strong>Name:</strong> {{ new_npc["name"] }} -
     {% if new_npc["class"]: %}{{ new_npc["class"]["name"] }}{% else: %}Commoner{% endif %}
 </summary>
     <br/>
-    <p>Race: {{ new_npc["race"] }}</p>
+    <p><strong>Race:</strong> {{ new_npc["race"] }}</p>
     <br/>
-    <p>Genre: {{ new_npc["genre"] }}</p>
+    <p><strong>Genre:</strong> {{ new_npc["genre"] }}</p>
     <br/>
-    <p>Gender: {{ new_npc["gender"] }}</p>
+    <p><strong>Gender:</strong> {{ new_npc["gender"] }}</p>
     <br/>
-    <p>Alignment: {{ new_npc["alignment"] }}</p>
+    <p><strong>Alignment:</strong> {{ new_npc["alignment"] }}</p>
     <br/>
-    <p>Strength: {{ new_npc["stats"]["strength"]["value"] }} - ({{ new_npc["stats"]["strength"]["modifier"] }})</p>
-    <p>Dexterity: {{ new_npc["stats"]["dexterity"]["value"] }} - ({{ new_npc["stats"]["dexterity"]["modifier"] }})</p>
-    <p>Constitution: {{ new_npc["stats"]["constitution"]["value"] }} - ({{ new_npc["stats"]["constitution"]["modifier"] }})</p>
-    <p>Intelligence: {{ new_npc["stats"]["intelligence"]["value"] }} - ({{ new_npc["stats"]["intelligence"]["modifier"] }})</p>
-    <p>Wisdom: {{ new_npc["stats"]["wisdom"]["value"] }} - ({{ new_npc["stats"]["wisdom"]["modifier"] }})</p>
-    <p>Charisma: {{ new_npc["stats"]["charisma"]["value"] }} - ({{ new_npc["stats"]["charisma"]["modifier"] }})</p>
+    <p><strong>HP:</strong> {{ new_npc["hp"] }}</p>
+    <br/>
+    <p><strong>Strength:</strong> {{ new_npc["stats"]["strength"]["value"] }} - ({{ new_npc["stats"]["strength"]["modifier"] }})</p>
+    <p><strong>Dexterity:</strong> {{ new_npc["stats"]["dexterity"]["value"] }} - ({{ new_npc["stats"]["dexterity"]["modifier"] }})</p>
+    <p><strong>Constitution:</strong> {{ new_npc["stats"]["constitution"]["value"] }} - ({{ new_npc["stats"]["constitution"]["modifier"] }})</p>
+    <p><strong>Intelligence:</strong> {{ new_npc["stats"]["intelligence"]["value"] }} - ({{ new_npc["stats"]["intelligence"]["modifier"] }})</p>
+    <p><strong>Wisdom:</strong> {{ new_npc["stats"]["wisdom"]["value"] }} - ({{ new_npc["stats"]["wisdom"]["modifier"] }})</p>
+    <p><strong>Charisma:</strong> {{ new_npc["stats"]["charisma"]["value"] }} - ({{ new_npc["stats"]["charisma"]["modifier"] }})</p>
+    <br/>
+    {% for type in new_npc["traits"]: %}
+    <br/>
+    <p><strong>{{ type.title() }}:</strong></p>
+    <br/>
+    {% for trait in new_npc["traits"][type]: %}
+    <ul>
+        <li>{{ trait }}: {{ new_npc["traits"][type][trait] }}</li>
+    </ul>
+    {% endfor %}
+    {% endfor %}
 </details>
