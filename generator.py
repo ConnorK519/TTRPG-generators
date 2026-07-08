@@ -20,7 +20,7 @@ def roll_race(valid_races=None):
 
 
 def check_race_exists(race):
-    return race in NAME_DATA.keys()
+    return race in NAME_DATA
 
 
 def roll_genre(race, valid_genres=None):
@@ -29,7 +29,7 @@ def roll_genre(race, valid_genres=None):
 
 
 def check_genre_exists(race, genre):
-    return genre in NAME_DATA[race].keys()
+    return genre in NAME_DATA.get(race, {})
 
 
 def roll_gender(race, genre):
@@ -38,7 +38,7 @@ def roll_gender(race, genre):
 
 
 def check_gender_exists(race, genre, gender):
-    return gender in NAME_DATA[race][genre].keys() and not gender == "Surnames"
+    return not gender == "Surnames" and gender in NAME_DATA.get(race, {}).get(genre, {})
 
 
 def roll_order():
@@ -67,7 +67,7 @@ def roll_stat_values():
         lowest_roll = 7
         total = 0
         for i in range(0, 4):
-            roll = random.choice(range(1, 7))
+            roll = random.randint(1, 6)
             total += roll
             if roll < lowest_roll:
                 lowest_roll = roll
@@ -86,7 +86,7 @@ def validate_data(args):
     morality = args.get("morality").title() if args.get("morality") else roll_morality()
 
     class_ = args.get("class").title() if args.get("class") else None
-    assign_class = bool(args.get("assign-class"))
+    assign_class = args.get("assign-class").title() if args.get("assign-class") else "50%"
 
     # Adds names to the validated data if present.
     validated_data = {
@@ -97,13 +97,13 @@ def validate_data(args):
 
     # Checks order axis is present and if so validates it.
     if order and not check_order_exists(order):
-        raise ValueError(f"Invalid order axis: {order}. Valid orders: {ALIGNMENT_DATA["order"]}")
+        raise ValueError(f"Invalid order axis: {order}. Valid orders: {ALIGNMENT_DATA['order']}")
 
     validated_data["order"] = order
 
     # Checks morality axis is present and if so validates it.
     if morality and not check_morality_exists(morality):
-        raise ValueError(f"Invalid morality axis: {morality}. Valid moralities: {ALIGNMENT_DATA["morality"]}")
+        raise ValueError(f"Invalid morality axis: {morality}. Valid moralities: {ALIGNMENT_DATA['morality']}")
 
     validated_data["morality"] = morality
 
@@ -111,15 +111,19 @@ def validate_data(args):
         raise ValueError(f"Invalid class: {class_}. Valid classes: {list(CLASS_DATA.keys())}")
 
     if class_:
-        validated_data["class"] = {"name": class_} | CLASS_DATA[class_]["class data"]
-    elif not class_ and assign_class:
-        new_class = roll_class()
-        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
-    elif not class_ and random.choice(range(1, 101)) <= 50:
-        new_class = roll_class()
-        validated_data["class"] = {"name": new_class} | CLASS_DATA[new_class]["class data"]
-    else:
         validated_data["class"] = class_
+
+    if not class_:
+        match assign_class:
+            case "No Class":
+                validated_data["class"] = class_
+                pass
+            case "50%":
+                validated_data["class"] = roll_class() if random.choice(range(1, 101)) <= 50 else class_
+                pass
+            case "100%":
+                validated_data["class"] = roll_class()
+                pass
 
     # Sets the match pattern for how to validate the data
     name_data_pattern = (bool(race), bool(genre), bool(gender))
@@ -211,13 +215,34 @@ def generate_name(race=None, genre=None, gender=None, firstname=None, surname=No
     return full_name
 
 
+def generate_class_data(class_name):
+    if not class_name:
+        return class_name
+    class_ = {
+        "name": class_name
+    }
+    class_data = CLASS_DATA[class_name]["class data"].copy()
+    class_data["cantrips"] = []
+    cantrip_limit = CLASS_DATA[class_name]["cantrips limit"]
+    class_cantrips = CLASS_DATA[class_name]["class cantrips"].copy()
+    actual_picks = min(cantrip_limit, len(class_cantrips))
+    for i in range(actual_picks):
+        cantrip = class_cantrips.pop(random.choice(range(0, len(class_cantrips))))
+        class_data["cantrips"].append(cantrip)
+    return class_ | class_data
+
+
 def generate_stats(race, class_=None, opt_stats=None):
     stats = {
     }
     race_stat_bonuses = RACE_DATA[race]["stat bonuses"]
     class_data = CLASS_DATA.get(class_)
     stat_list = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
-    if class_data:
+    stat_values = roll_stat_values()
+    if not class_data or not opt_stats:
+        random.shuffle(stat_list)
+    if class_data and opt_stats:
+        stat_values.sort(reverse=True)
         main_stat = class_data["main stat"].copy()
         secondary_stats = class_data["secondary stats"].copy()
         dump_stats = class_data["dump stats"].copy()
@@ -235,11 +260,6 @@ def generate_stats(race, class_=None, opt_stats=None):
         random.shuffle(secondary_stats)
         random.shuffle(dump_stats)
         stat_list = main_stat + secondary_stats + dump_stats
-    stat_values = roll_stat_values()
-    if opt_stats:
-        stat_values.sort(reverse=True)
-    else:
-        random.shuffle(stat_list)
     for i in range(0, 6):
         stat = stat_list[i]
         value = stat_values[i]
@@ -254,7 +274,8 @@ def generate_stats(race, class_=None, opt_stats=None):
 
 
 def calculate_hp(class_data=None, con_bonus=None):
-    base_hp = class_data['hit dice'] if class_data else random.choice(range(5, 11))
+    commoner_base_hp = random.randint(3, 8)
+    base_hp = class_data['hit dice'] if class_data else commoner_base_hp
     return base_hp + con_bonus
 
 
@@ -357,7 +378,7 @@ def generate_npc(args):
     morality = validated_data.get("morality")
     alignment = "True Neutral" if order == "Neutral" and morality == "Neutral" else f"{order} {morality}"
 
-    class_data = validated_data["class"]
+    class_data = generate_class_data(validated_data["class"])
     class_name = None
 
     if class_data:
@@ -408,5 +429,3 @@ def get_field_data():
         }
     }
     return data
-
-

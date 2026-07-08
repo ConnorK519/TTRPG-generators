@@ -46,7 +46,7 @@
             <label for="genre-select">Genre:</label>
             <select id="genre-select" name="genre">
                 <option value="">Select a Genre</option>
-                  {% for genre in field_data['GENRE']['all_genres']: %}
+                {% for genre in field_data['GENRE']['all_genres']: %}
                 <option value="{{ genre }}">{{ genre }}</option>
                 {% endfor %}
             </select>
@@ -54,6 +54,9 @@
             <label for="gender-select">Gender:</label>
             <select id="gender-select" name="gender">
                 <option value="">Select a Gender</option>
+                {% for gender in field_data['GENDER']['all_genders']: %}
+                <option value="{{ gender }}">{{ gender }}</option>
+                {% endfor %}
             </select>
         </fieldset>
 
@@ -67,11 +70,11 @@
                 {% endfor %}
             </select>
 
-            <label for="assign-class-select">Assign Class:</label>
+            <label for="assign-class-select"><span class="tooltip">Assign Class:<span class="tooltiptext">Handles random assignment if a class is NOT selected.</span></span></label>
             <select id="assign-class-select" name="assign-class">
-                <option value="">Coin flip</option>
-                <option>Guaranteed</option>
-                <option>No class</option>
+                <option value="No class">No Class</option>
+                <option value="50%">50%</option>
+                <option value="100%">100%</option>
             </select>
 
             <label for="opt-stats-checkbox">Optimise Stats:</label>
@@ -81,5 +84,8 @@
     </form>
     <div id="npc-list"></div>
 </div>
+<script>
+    const fieldData = {{ field_data | tojson }}
+</script>
 <script src="{{ url_for('static', filename='js/generate-npc.js') }}"></script>
 {% endblock %}

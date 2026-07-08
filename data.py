@@ -157,7 +157,7 @@ GENERATION_DATA = {
         "Elf": {
             "stat bonuses": {
                 "strength": 0,
-                "dexterity": 0,
+                "dexterity": 2,
                 "constitution": 0,
                 "intelligence": 0,
                 "wisdom": 0,
@@ -168,7 +168,7 @@ GENERATION_DATA = {
             "stat bonuses": {
                 "strength": 0,
                 "dexterity": 0,
-                "constitution": 0,
+                "constitution": 2,
                 "intelligence": 0,
                 "wisdom": 0,
                 "charisma": 0
@@ -220,9 +220,29 @@ GENERATION_DATA = {
             "main stat": ["intelligence"],
             "secondary stats": ["dexterity", "constitution"],
             "dump stats": ["wisdom", "charisma", "strength"],
+            "cantrips limit": 2,
+            "class cantrips": [
+                {
+                    "Name": "Acid Splash",
+                    "School": "Conjuration",
+                    "Stats": {"Casting time": "1 Action", "Range": "60ft", "Duration": "Instantaneous",
+                              "Components": ["V", "S"]},
+                },
+                {
+                    "Name": "Booming Blade",
+                    "School": "Evocation",
+                    "Stats": {"Casting time": "1 Action", "Range": "Self (5-foot radius)", "Duration": "1 Round",
+                              "Components": ["S", "M"]},
+                },
+                {
+                    "Name": "",
+                    "School": "",
+                    "Stats": {"Casting time": "", "Range": "", "Duration": "",
+                              "Components": []},
+                }
+            ],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 2,
                 "features": {
                     "Magical Tinkering": "",
                     "Spellcasting": ""
@@ -233,9 +253,10 @@ GENERATION_DATA = {
             "main stat": ["strength"],
             "secondary stats": ["dexterity", "constitution"],
             "dump stats": ["wisdom", "charisma", "intelligence"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 12,
-                "cantrips": 0,
                 "features": {
                     "Rage": "",
                     "Unarmored Defense": ""
@@ -246,9 +267,10 @@ GENERATION_DATA = {
             "main stat": ["charisma"],
             "secondary stats": ["dexterity", "constitution"],
             "dump stats": ["strength", "wisdom", "intelligence"],
+            "cantrips limit": 2,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Spellcasting": "",
                     "Bardic Inspiration": ""
@@ -259,9 +281,10 @@ GENERATION_DATA = {
             "main stat": ["wisdom"],
             "secondary stats": ["constitution", "strength"],
             "dump stats": ["intelligence", "dexterity", "charisma"],
+            "cantrips limit": 3,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Spellcasting": "",
                     "Divine Domain": ""
@@ -272,9 +295,10 @@ GENERATION_DATA = {
             "main stat": ["wisdom"],
             "secondary stats": ["dexterity", "constitution"],
             "dump stats": ["intelligence", "charisma", "strength"],
+            "cantrips limit": 2,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Druidic": "",
                     "Spellcasting": ""
@@ -286,9 +310,10 @@ GENERATION_DATA = {
             "main stat": [],
             "secondary stats": ["constitution"],
             "dump stats": ["intelligence", "wisdom", "charisma"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 10,
-                "cantrips": 0,
                 "features": {
                     "Fighting Style": "",
                     "Second Wind": ""
@@ -300,9 +325,10 @@ GENERATION_DATA = {
             "main stat": [],
             "secondary stats": ["constitution"],
             "dump stats": ["intelligence", "strength", "charisma"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Unarmored Defense": "",
                     "Martial Arts": ""
@@ -314,9 +340,10 @@ GENERATION_DATA = {
             "secondary stats pooling": ["wisdom", "dexterity"],
             "secondary stats": ["constitution"],
             "dump stats": ["intelligence"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 10,
-                "cantrips": 0,
                 "features": {
                     "Divine Sense": "",
                     "Lay on Hands": ""
@@ -327,9 +354,10 @@ GENERATION_DATA = {
             "main stat": ["dexterity"],
             "secondary stats": ["wisdom", "constitution"],
             "dump stats": ["intelligence", "charisma", "strength"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 10,
-                "cantrips": 0,
                 "features": {
                     "Favored Enemy": "",
                     "Natural Explorer": ""
@@ -340,9 +368,10 @@ GENERATION_DATA = {
             "main stat": ["dexterity"],
             "secondary stats": ["constitution"],
             "dump stats": ["intelligence", "charisma", "strength", "wisdom"],
+            "cantrips limit": 0,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Expertise": "",
                     "Sneak Attack": "",
@@ -354,9 +383,10 @@ GENERATION_DATA = {
             "main stat": ["charisma"],
             "secondary stats": ["constitution", "dexterity"],
             "dump stats": ["intelligence", "strength", "wisdom"],
+            "cantrips limit": 4,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 6,
-                "cantrips": 0,
                 "features": {
                     "Spellcasting": "",
                     "Sorcerous Origin": ""
@@ -367,9 +397,10 @@ GENERATION_DATA = {
             "main stat": ["charisma"],
             "secondary stats": ["constitution", "dexterity"],
             "dump stats": ["intelligence", "strength", "wisdom"],
+            "cantrips limit": 2,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 8,
-                "cantrips": 0,
                 "features": {
                     "Otherworldly Patron": "",
                     "Pact Magic": ""
@@ -380,9 +411,10 @@ GENERATION_DATA = {
             "main stat": ["intelligence"],
             "secondary stats": ["constitution", "dexterity"],
             "dump stats": ["charisma", "strength", "wisdom"],
+            "cantrips limit": 3,
+            "class cantrips": [],
             "class data": {
                 "hit dice": 6,
-                "cantrips": 0,
                 "features": {
                     "Spellcasting": "",
                     "Arcane Recovery": ""
@@ -505,7 +537,7 @@ GENERATION_DATA = {
         },
         "ego": {
             "high": {
-                "Arrogant": "Has an an exaggerated sense of their importance and/or abilities.",
+                "Arrogant": "Has an exaggerated sense of their importance and/or abilities.",
                 "Self-assured": "Confident in their own abilities and/or character.",
                 "Bold": "Willing to take risks while being confident and courageous.",
                 "Overconfident": "Is unjustifiably confident and cocky."
