@@ -280,20 +280,10 @@ def calculate_hp(class_data=None, con_bonus=None):
 
 
 def generate_traits(order=None, morality=None, alignment=None):
-    alignment_traits = TRAIT_DATA["alignment_traits"]
     ego_traits = TRAIT_DATA["ego"]
     temperament_traits = TRAIT_DATA["temperament"]
 
     traits = {
-        "order traits": {
-
-        },
-        "morality traits": {
-
-        },
-        "alignment trait": {
-
-        },
         "ego trait": {
 
         },
@@ -301,23 +291,6 @@ def generate_traits(order=None, morality=None, alignment=None):
 
         }
     }
-    order_trait_count = 1
-    morality_trait_count = 1
-
-    order_trait_threshold = 600
-    morality_trait_threshold = 600
-
-    order_data = alignment_traits["order"][order]
-    available_order_keys = list(order_data.keys())
-
-    morality_data = alignment_traits["morality"][morality]
-    available_morality_keys = list(morality_data.keys())
-
-    alignment_data = alignment_traits["alignment"][alignment]
-    available_alignment_keys = list(alignment_data.keys())
-
-    alignment_key = random.choice(available_alignment_keys)
-    traits["alignment trait"][alignment_key] = alignment_data[alignment_key]
 
     ego_level = random.choice(list(ego_traits.keys()))
     ego_level_data = ego_traits[ego_level]
@@ -332,32 +305,6 @@ def generate_traits(order=None, morality=None, alignment=None):
 
     temperament_key = random.choice(available_temperament_keys)
     traits["temperament trait"][temperament_key] = temperament_type_data[temperament_key]
-
-    while len(traits["order traits"].keys()) < order_trait_count:
-        unpicked_order_traits = set(available_order_keys) - set(traits["order traits"].keys())
-
-        order_trait_key = random.choice(list(unpicked_order_traits))
-
-        traits["order traits"][order_trait_key] = order_data[order_trait_key]
-
-        order_trait_roll = random.choice(range(1, 1001))
-
-        if order_trait_roll > order_trait_threshold:
-            order_trait_count += 1
-            order_trait_threshold += 200
-
-    while len(traits["morality traits"].keys()) < morality_trait_count:
-        unpicked_morality_traits = set(available_morality_keys) - set(traits["morality traits"].keys())
-
-        morality_trait_key = random.choice(list(unpicked_morality_traits))
-
-        traits["morality traits"][morality_trait_key] = morality_data[morality_trait_key]
-
-        morality_trait_roll = random.choice(range(1, 1001))
-
-        if morality_trait_roll > morality_trait_threshold:
-            morality_trait_count += 1
-            morality_trait_threshold += 200
     return traits
 
 
